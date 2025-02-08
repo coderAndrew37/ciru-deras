@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Order Tracking</title>
+    <link rel="stylesheet" href="/output.css" />
+  </head>
+  <body class="bg-idcBackground font-idcSans text-idcText">
+    <!-- Header -->
+    <header
+      class="bg-idcPrimary text-white p-4 flex items-center justify-between"
+    >
+      <a href="/" class="flex items-center space-x-2">
+        <img
+          src="/images/amazon-logo-white.png"
+          alt="Logo"
+          class="h-8 hidden sm:block"
+        />
+        <img
+          src="/images/amazon-mobile-logo-white.png"
+          alt="Mobile Logo"
+          class="h-8 sm:hidden"
+        />
+      </a>
+      <div class="flex items-center space-x-4">
+        <a href="/orders.html" class="text-sm">Returns & Orders</a>
+        <a href="/checkout.html" class="relative">
+          <img src="/images/icons/cart-icon.png" alt="Cart" class="h-6" />
+          <span
+            class="absolute top-0 right-0 bg-red-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center js-cart-count"
+            >0</span
+          >
+        </a>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-4xl mx-auto p-6 mt-6 bg-white rounded-lg shadow">
+      <!-- Back to Orders Link -->
+      <a
+        href="/orders.html"
+        class="text-idcPrimary underline mb-4 inline-block"
+      >
+        View all orders
+      </a>
+
+      <!-- Products will be rendered dynamically -->
+      <section id="products-section">
+        <h1 class="text-2xl font-bold mb-6">Order Tracking</h1>
+        <p class="text-gray-500">Loading products...</p>
+      </section>
+    </main>
+
+    <script type="module" src="/scripts/tracking.js"></script>
+  </body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact Us | Ciru Deras</title>
+
+    <!-- Tailwind CSS -->
+    <link rel="stylesheet" href="/output.css" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body class="bg-light text-dark">
+    <!-- Navigation -->
+    <nav
+      class="bg-dark text-light py-4 fixed w-full top-0 left-0 z-50 shadow-md"
+    >
+      <div class="container mx-auto flex items-center justify-between px-4">
+        <a href="/" class="text-2xl font-bold text-primary">Ciru Deras</a>
+        <ul class="hidden md:flex space-x-8 text-sm">
+          <li><a href="/" class="hover:text-primary">Home</a></li>
+          <li><a href="/shop" class="hover:text-primary">Shop</a></li>
+          <li><a href="/about.html" class="hover:text-primary">About</a></li>
+          <li>
+            <a href="/vip.html" class="hover:text-primary">Exclusive VIP</a>
+          </li>
+          <li>
+            <a href="/contact.html" class="text-primary font-bold">Contact</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section
+      class="relative w-full h-[60vh] flex items-center justify-center bg-cover bg-center"
+      style="background-image: url('/images/contact-hero.jpg')"
+    >
+      <div class="absolute inset-0 bg-dark bg-opacity-50"></div>
+      <div class="text-center text-light relative z-10 px-6">
+        <h1 class="text-5xl font-bold">Get in Touch</h1>
+        <p class="mt-4 text-lg max-w-2xl mx-auto">
+          We’d love to hear from you! Fill out the form below and we’ll get back
+          to you as soon as possible.
+        </p>
+      </div>
+    </section>
+
+    <!-- Contact Form -->
+    <section class="container mx-auto px-4 py-16">
+      <div class="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-lg">
+        <h2 class="text-3xl font-bold text-dark mb-6 text-center">
+          Send Us a Message
+        </h2>
+
+        <form class="js-contact-form">
+          <input
+            type="text"
+            name="name"
+            placeholder="Your Name"
+            required
+            class="w-full border p-2 rounded mb-3"
+          />
+          <input
+            type="email"
+            name="email"
+            placeholder="Your Email"
+            required
+            class="w-full border p-2 rounded mb-3"
+          />
+          <textarea
+            name="message"
+            placeholder="Your Message"
+            required
+            class="w-full border p-2 rounded mb-3"
+          ></textarea>
+
+          <div
+            class="spinner-container hidden flex justify-center items-center mb-3"
+          >
+            <div class="loader"></div>
+          </div>
+
+          <button
+            type="submit"
+            class="bg-primary text-dark py-3 px-6 rounded-md text-lg font-medium hover:bg-opacity-90 transition w-full"
+          >
+            Send Message
+          </button>
+        </form>
+
+        <p class="form-message text-center text-gray-600 mt-4"></p>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-light py-6 text-center">
+      <p>&copy; 2024 Ciru Ciru wa Deras. All rights reserved.</p>
+    </footer>
+
+    <script type="module" src="/scripts/contact.js" defer></script>
+  </body>
+</html>

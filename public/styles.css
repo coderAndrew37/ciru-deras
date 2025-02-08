@@ -1,0 +1,34 @@
+/* Add hover effects for active links */
+nav a:hover {
+  text-decoration: underline;
+}
+
+#search-bar.opacity-100 {
+  opacity: 1; /* Fully visible */
+}
+
+#search-bar.scale-100 {
+  transform: scale(1); /* Normal size */
+}
+
+/* Search bar input styling */
+#search-bar input {
+  font-size: 1rem;
+  border: none;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Close button hover effect */
+#close-search:hover {
+  color: #ff9900; /* Primary color on hover */
+}
+
+/* Search Bar Animation */
+#search-bar {
+  transform: translateY(-100%);
+  transition: transform 0.5s ease-in-out;
+}
+
+#search-bar.active {
+  transform: translateY(0);
+}

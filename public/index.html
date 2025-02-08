@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clothing Store</title>
+
+    <!-- Tailwind CSS -->
+    <link rel="stylesheet" href="/output.css" />
+
+    <!-- custom css  -->
+    <link rel="stylesheet" href="/styles.css" />
+
+    <!-- Gsap -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+    <!-- scrollTrigger -->
+  </head>
+  <body class="font-sans bg-light text-dark">
+    <!-- Promotional Banner -->
+    <div class="bg-primary text-light text-center py-2 text-sm">
+      <p>FREE SHIPPING on orders over Ksh 5000</p>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav
+      class="bg-dark text-light py-4 fixed w-full top-0 left-0 z-50 shadow-md"
+    >
+      <div class="container mx-auto flex items-center justify-between px-4">
+        <!-- Logo -->
+        <a href="#" class="text-2xl font-bold text-primary">
+          <i class="fas fa-store"></i> Ciru Deras
+        </a>
+
+        <!-- Desktop Navigation Links -->
+        <ul class="hidden md:flex space-x-8 text-sm">
+          <li><a href="#" class="hover:text-primary">Home</a></li>
+          <li><a href="#" class="hover:text-primary">Shop</a></li>
+          <li><a href="#" class="hover:text-primary">Collections</a></li>
+          <a href="/wishlist.html" class="relative hover:text-primary">
+            <i class="fas fa-heart"></i>
+            <span
+              class="js-wishlist-quantity absolute -top-2 -right-3 bg-primary text-dark rounded-full text-xs font-bold w-5 h-5 flex items-center justify-center hidden"
+            >
+              0
+            </span>
+          </a>
+
+          <li><a href="/about.html" class="hover:text-primary">About</a></li>
+          <li><a href="#" class="hover:text-primary">Contact</a></li>
+        </ul>
+
+        <!-- Icons -->
+        <!-- Search Button in Navbar -->
+        <div class="flex items-center space-x-4">
+          <a href="#" id="search-btn" class="hover:text-primary">
+            <i class="fas fa-search"></i>
+          </a>
+          <a href="#" class="hover:text-primary"><i class="fas fa-user"></i></a>
+          <a href="/checkout" class="relative hover:text-primary">
+            <i class="fas fa-shopping-cart"></i>
+            <span
+              class="js-cart-quantity absolute -top-2 -right-3 bg-primary text-dark rounded-full text-xs font-bold w-5 h-5 flex items-center justify-center hidden"
+              >0</span
+            >
+          </a>
+        </div>
+
+        <!-- Search Bar -->
+        <div
+          id="search-bar"
+          class="fixed top-0 left-0 w-full bg-dark bg-opacity-90 text-light z-50 hidden transform -translate-y-full transition-transform duration-500 ease-in-out"
+        >
+          <div class="container mx-auto px-4 py-4 flex items-center">
+            <input
+              type="text"
+              placeholder="Search our store..."
+              class="w-full bg-light text-dark px-4 py-2 rounded-md outline-none"
+            />
+            <button id="close-search" class="ml-4 text-primary">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <button
+          id="menu-btn"
+          class="block md:hidden text-primary focus:outline-none"
+        >
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+
+      <!-- Mobile Dropdown Menu -->
+      <div
+        id="mobile-menu"
+        class="absolute top-full left-0 w-full bg-dark text-light hidden md:hidden"
+      >
+        <ul class="space-y-4 py-4 text-center text-sm">
+          <li><a href="#" class="hover:text-primary block">Home</a></li>
+          <li><a href="#" class="hover:text-primary block">Shop</a></li>
+          <li>
+            <a href="#" class="hover:text-primary block">Collections</a>
+          </li>
+          <a href="/wishlist.html" class="relative hover:text-primary">
+            <i class="fas fa-heart"></i>
+            <span
+              class="js-wishlist-quantity absolute -top-2 -right-3 bg-primary text-dark rounded-full text-xs font-bold w-5 h-5 flex items-center justify-center hidden"
+            >
+              0
+            </span>
+          </a>
+
+          <li>
+            <a href="/about.html" class="hover:text-primary block">About</a>
+          </li>
+          <li><a href="#" class="hover:text-primary block">Contact</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Search Bar (Hidden Initially) -->
+    <div
+      id="search-bar"
+      class="absolute top-16 left-0 w-full bg-dark text-light hidden z-10"
+    >
+      <div class="container mx-auto px-4 py-2 flex items-center">
+        <input
+          type="text"
+          placeholder="Search our store..."
+          class="w-full bg-light text-dark px-4 py-2 rounded-md outline-none"
+        />
+        <button id="close-search" class="ml-4 text-primary">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="carousel" class="relative w-full h-[80vh] overflow-hidden">
+      <!-- Slides -->
+      <div class="carousel-inner relative h-full">
+        <div
+          class="carousel-item absolute inset-0 transition-opacity duration-700 opacity-100"
+          data-index="0"
+          style="
+            background-image: url('/images/hero.jpeg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+          "
+        >
+          <div
+            class="absolute inset-0 bg-dark bg-opacity-50 flex flex-col items-center justify-center text-center text-light p-6"
+          >
+            <h1 class="text-4xl md:text-6xl font-bold">Discover Your Style</h1>
+            <p class="mt-4 text-lg md:text-xl">
+              Shop the latest collections with free shipping.
+            </p>
+            <div class="mt-6 space-x-4">
+              <a
+                href="#"
+                class="bg-primary text-dark px-6 py-3 rounded-md text-lg font-medium hover:bg-opacity-90 transition"
+                >Shop Now</a
+              >
+              <a
+                href="#"
+                class="bg-light text-dark px-6 py-3 rounded-md text-lg font-medium hover:bg-opacity-90 transition"
+                >Explore</a
+              >
+            </div>
+          </div>
+        </div>
+        <div
+          class="carousel-item absolute inset-0 transition-opacity duration-700 opacity-0"
+          data-index="1"
+          style="
+            background-image: url('/images/hero2.jpeg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+          "
+        >
+          <div
+            class="absolute inset-0 bg-dark bg-opacity-50 flex flex-col items-center justify-center text-center text-light p-6"
+          >
+            <h1 class="text-4xl md:text-6xl font-bold">Express Yourself</h1>
+            <p class="mt-4 text-lg md:text-xl">Find your perfect fit.</p>
+            <div class="mt-6 space-x-4">
+              <a
+                href="#"
+                class="bg-primary text-dark px-6 py-3 rounded-md text-lg font-medium hover:bg-opacity-90 transition"
+                >Shop Now</a
+              >
+              <a
+                href="#"
+                class="bg-light text-dark px-6 py-3 rounded-md text-lg font-medium hover:bg-opacity-90 transition"
+                >Explore</a
+              >
+            </div>
+          </div>
+        </div>
+        <div
+          class="carousel-item absolute inset-0 transition-opacity duration-700 opacity-0"
+          data-index="2"
+          style="
+            background-image: url('/images/hero3.jpeg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+          "
+        >
+          <div
+            class="absolute inset-0 bg-dark bg-opacity-50 flex flex-col items-center justify-center text-center text-light p-6"
+          >
+            <h1 class="text-4xl md:text-6xl font-bold">
+              Unleash Your Potential
+            </h1>
+            <p class="mt-4 text-lg md:text-xl">Style that makes a statement.</p>
+            <div class="mt-6 space-x-4">
+              <a
+                href="#"
+                class="bg-primary text-dark px-6 py-3 rounded-md text-lg font-medium hover:bg-opacity-90 transition"
+                >Shop Now</a
+              >
+              <a
+                href="#"
+                class="bg-light text-dark px-6 py-3 rounded-md text-lg font-medium hover:bg-opacity-90 transition"
+                >Explore</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation Controls -->
+      <button
+        id="prev"
+        class="absolute top-1/2 left-4 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full"
+      >
+        <i class="fas fa-chevron-left"></i>
+      </button>
+      <button
+        id="next"
+        class="absolute top-1/2 right-4 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full"
+      >
+        <i class="fas fa-chevron-right"></i>
+      </button>
+    </section>
+
+    <section id="deras" class="container mx-auto px-4 py-16">
+      <h2 class="text-4xl font-bold text-center text-dark mb-8">
+        Shop Our Deras
+      </h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+    </section>
+
+    <section id="deras-customers" class="container mx-auto px-4 py-16">
+      <h2 class="text-3xl font-semibold text-center text-dark mb-6">
+        Happy Customers
+      </h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </section>
+
+    <section id="new-arrivals" class="container mx-auto px-4 py-16">
+      <h2 class="text-4xl font-bold text-center text-dark mb-8">
+        New Arrivals
+      </h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+    </section>
+
+    <section id="new-arrivals-customers" class="container mx-auto px-4 py-16">
+      <h2 class="text-3xl font-semibold text-center text-dark mb-6">
+        More Happy Customers
+      </h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </section>
+
+    <section id="testimonials" class="container mx-auto px-4 py-16">
+      <h2 class="text-4xl font-bold text-center text-dark mb-8">
+        Real Reviews, Real Confidence
+      </h2>
+
+      <!-- Testimonials Grid -->
+      <div
+        id="testimonials-grid"
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+      >
+        <!-- Testimonials will be inserted here dynamically -->
+      </div>
+
+      <!-- Submit Testimonial Button -->
+      <div class="text-center mt-8">
+        <button
+          id="open-testimonial-modal"
+          class="bg-primary text-dark py-3 px-6 rounded-md text-lg font-medium hover:bg-opacity-90 transition"
+        >
+          Submit Your Review
+        </button>
+      </div>
+    </section>
+
+    <!-- AI-Powered Recommendations -->
+    <section id="ai-recommendations" class="container mx-auto px-4 py-16">
+      <h2 class="text-4xl font-bold text-center text-dark mb-8">
+        ✨ AI-Powered Recommendations
+      </h2>
+      <p class="text-center text-gray-500 mb-6">
+        Tell us your style preferences & let AI find the perfect Deras for you!
+      </p>
+
+      <div class="text-center">
+        <input
+          type="text"
+          id="recommendation-input"
+          placeholder="I need a summer deras..."
+          class="w-1/2 p-3 border rounded"
+        />
+        <button
+          id="recommendation-btn"
+          class="bg-primary text-dark py-3 px-6 rounded-md mt-4"
+        >
+          Get AI Suggestions
+        </button>
+      </div>
+
+      <div
+        id="recommendation-results"
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-8"
+      >
+        <!-- AI product recommendations will appear here -->
+      </div>
+    </section>
+
+    <!-- Testimonial Submission Modal -->
+    <div
+      id="testimonial-modal"
+      class="fixed inset-0 bg-dark bg-opacity-50 hidden z-50 flex items-center justify-center"
+    >
+      <div class="bg-white w-[90%] md:w-[500px] rounded-lg p-6 relative">
+        <button
+          class="absolute top-4 right-4 text-dark text-2xl close-modal"
+          onclick="closeTestimonialModal()"
+        >
+          ×
+        </button>
+
+        <h3 class="text-2xl font-bold text-dark mb-4 text-center">
+          Share Your Experience
+        </h3>
+
+        <form id="testimonial-form">
+          <input
+            type="text"
+            id="name"
+            placeholder="Your Name"
+            required
+            class="w-full border p-2 rounded mb-3"
+          />
+          <textarea
+            id="review"
+            placeholder="Your Review"
+            required
+            class="w-full border p-2 rounded mb-3"
+          ></textarea>
+
+          <label class="block text-dark mb-1">Rating:</label>
+          <select id="rating" required class="w-full border p-2 rounded mb-3">
+            <option value="5">⭐⭐⭐⭐⭐ - 5 Stars</option>
+            <option value="4">⭐⭐⭐⭐ - 4 Stars</option>
+            <option value="3">⭐⭐⭐ - 3 Stars</option>
+            <option value="2">⭐⭐ - 2 Stars</option>
+            <option value="1">⭐ - 1 Star</option>
+          </select>
+
+          <label class="block text-dark mb-1">Upload Photo:</label>
+          <input
+            type="file"
+            id="photo"
+            accept="image/*"
+            class="w-full border p-2 rounded mb-3"
+          />
+
+          <button
+            type="submit"
+            class="bg-primary text-dark py-3 px-6 rounded-md text-lg font-medium hover:bg-opacity-90 transition w-full"
+          >
+            Submit Review
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div
+      id="modal-product1"
+      class="fixed inset-0 bg-dark bg-opacity-50 hidden z-50 flex items-center justify-center"
+    >
+      <div
+        class="bg-white w-[90%] md:w-[500px] rounded-lg p-6 relative overflow-y-auto max-h-[90vh]"
+      >
+        <!-- Close Button -->
+        <button
+          class="absolute top-4 right-4 text-dark text-2xl close-modal"
+          onclick="closeModal()"
+        >
+          &times;
+        </button>
+
+        <!-- Modal Content -->
+        <div class="text-center">
+          <img
+            src=""
+            alt="Product Image"
+            class="w-full h-64 object-cover rounded-lg mb-4"
+          />
+          <h3 class="text-2xl font-bold text-dark"></h3>
+          <p class="text-primary font-bold mt-2"></p>
+
+          <!-- Size Selection -->
+          <div class="mt-4">
+            <label for="size" class="block text-dark text-sm font-medium"
+              >Size</label
+            >
+            <select
+              id="size"
+              class="mt-2 w-full border rounded-md px-3 py-2 text-dark"
+            ></select>
+          </div>
+
+          <!-- Quantity Selection -->
+          <div class="mt-4">
+            <label for="quantity" class="block text-dark text-sm font-medium"
+              >Quantity</label
+            >
+            <div class="flex items-center justify-center space-x-2 mt-2">
+              <button
+                class="bg-gray-300 text-dark px-3 py-2 rounded-md"
+                id="decrease-quantity"
+              >
+                -
+              </button>
+              <input
+                type="number"
+                id="quantity"
+                class="w-12 text-center border rounded-md px-2 py-1 text-dark"
+                min="1"
+                value="1"
+              />
+              <button
+                class="bg-gray-300 text-dark px-3 py-2 rounded-md"
+                id="increase-quantity"
+              >
+                +
+              </button>
+            </div>
+          </div>
+
+          <!-- Add to Cart -->
+          <button
+            class="bg-primary text-dark py-3 px-6 rounded-md mt-6 text-lg font-medium hover:bg-opacity-90 transition add-to-cart"
+          >
+            Add to Cart
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Font Awesome -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/js/all.min.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- Scripts -->
+    <script type="module" src="/scripts/index.js" defer></script>
+  </body>
+</html>

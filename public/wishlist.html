@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Wishlist</title>
+    <link rel="stylesheet" href="/output.css" />
+    <script src="/scripts/wishList.js" type="module" defer></script>
+  </head>
+  <body class="bg-light text-dark">
+    <!-- Navigation Bar -->
+    <nav
+      class="bg-dark text-light py-4 fixed w-full top-0 left-0 z-50 shadow-md"
+    >
+      <div class="container mx-auto flex items-center justify-between px-4">
+        <!-- Logo -->
+        <a href="/" class="text-2xl font-bold text-primary">
+          <i class="fas fa-store"></i> Ciru Deras
+        </a>
+
+        <!-- Desktop Navigation Links -->
+        <ul class="hidden md:flex space-x-8 text-sm">
+          <li><a href="/" class="hover:text-primary">Home</a></li>
+          <li><a href="#" class="hover:text-primary">Shop</a></li>
+          <li><a href="#" class="hover:text-primary">Collections</a></li>
+          <a href="/wishlist.html" class="relative hover:text-primary">
+            <i class="fas fa-heart"></i>
+            <span
+              class="js-wishlist-quantity absolute -top-2 -right-3 bg-primary text-dark rounded-full text-xs font-bold w-5 h-5 flex items-center justify-center hidden"
+            >
+              0
+            </span>
+          </a>
+
+          <li><a href="#" class="hover:text-primary">About</a></li>
+          <li><a href="#" class="hover:text-primary">Contact</a></li>
+        </ul>
+
+        <!-- Icons -->
+        <!-- Search Button in Navbar -->
+        <div class="flex items-center space-x-4">
+          <a href="#" id="search-btn" class="hover:text-primary">
+            <i class="fas fa-search"></i>
+          </a>
+          <a href="#" class="hover:text-primary"><i class="fas fa-user"></i></a>
+          <a href="/checkout" class="relative hover:text-primary">
+            <i class="fas fa-shopping-cart"></i>
+            <span
+              class="js-cart-quantity absolute -top-2 -right-3 bg-primary text-dark rounded-full text-xs font-bold w-5 h-5 flex items-center justify-center hidden"
+              >0</span
+            >
+          </a>
+        </div>
+
+        <!-- Search Bar -->
+        <div
+          id="search-bar"
+          class="fixed top-0 left-0 w-full bg-dark bg-opacity-90 text-light z-50 hidden transform -translate-y-full transition-transform duration-500 ease-in-out"
+        >
+          <div class="container mx-auto px-4 py-4 flex items-center">
+            <input
+              type="text"
+              placeholder="Search our store..."
+              class="w-full bg-light text-dark px-4 py-2 rounded-md outline-none"
+            />
+            <button id="close-search" class="ml-4 text-primary">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <button
+          id="menu-btn"
+          class="block md:hidden text-primary focus:outline-none"
+        >
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+
+      <!-- Mobile Dropdown Menu -->
+      <div
+        id="mobile-menu"
+        class="absolute top-full left-0 w-full bg-dark text-light hidden md:hidden"
+      >
+        <ul class="space-y-4 py-4 text-center text-sm">
+          <li><a href="#" class="hover:text-primary block">Home</a></li>
+          <li><a href="#" class="hover:text-primary block">Shop</a></li>
+          <li>
+            <a href="#" class="hover:text-primary block">Collections</a>
+          </li>
+          <a href="/wishlist.html" class="relative hover:text-primary">
+            <i class="fas fa-heart"></i>
+            <span
+              class="js-wishlist-quantity absolute -top-2 -right-3 bg-primary text-dark rounded-full text-xs font-bold w-5 h-5 flex items-center justify-center hidden"
+            >
+              0
+            </span>
+          </a>
+
+          <li><a href="#" class="hover:text-primary block">About</a></li>
+          <li><a href="#" class="hover:text-primary block">Contact</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Search Bar (Hidden Initially) -->
+    <div
+      id="search-bar"
+      class="absolute top-16 left-0 w-full bg-dark text-light hidden z-10"
+    >
+      <div class="container mx-auto px-4 py-2 flex items-center">
+        <input
+          type="text"
+          placeholder="Search our store..."
+          class="w-full bg-light text-dark px-4 py-2 rounded-md outline-none"
+        />
+        <button id="close-search" class="ml-4 text-primary">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+    </div>
+    <!-- Wishlist Page -->
+    <div class="container mx-auto px-4 py-16">
+      <h2 class="text-4xl font-bold text-center text-dark mb-8">My Wishlist</h2>
+      <div
+        id="wishlist-items"
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+      >
+        <!-- Wishlist items will be dynamically inserted here -->
+      </div>
+    </div>
+
+    <!-- Font Awesome -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/js/all.min.js"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

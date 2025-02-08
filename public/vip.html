@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Exclusive VIP Program | Ciru Deras</title>
+
+    <!-- Tailwind CSS -->
+    <link rel="stylesheet" href="/output.css" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body class="bg-light text-dark">
+    <!-- Navigation -->
+    <nav
+      class="bg-dark text-light py-4 fixed w-full top-0 left-0 z-50 shadow-md"
+    >
+      <div class="container mx-auto flex items-center justify-between px-4">
+        <a href="/" class="text-2xl font-bold text-primary">Ciru Deras</a>
+        <ul class="hidden md:flex space-x-8 text-sm">
+          <li><a href="/" class="hover:text-primary">Home</a></li>
+          <li><a href="/shop" class="hover:text-primary">Shop</a></li>
+          <li><a href="/about.html" class="hover:text-primary">About</a></li>
+          <li>
+            <a href="/vip.html" class="text-primary font-bold">Exclusive VIP</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section
+      class="relative w-full h-[80vh] flex items-center justify-center bg-cover bg-center"
+      style="background-image: url('/images/vip-hero.jpg')"
+    >
+      <div class="absolute inset-0 bg-dark bg-opacity-50"></div>
+      <div class="text-center text-light relative z-10 px-6">
+        <h1 class="text-5xl font-bold">Exclusive VIP Membership</h1>
+        <p class="mt-4 text-lg max-w-2xl mx-auto">
+          Unlock special perks, early access to collections, and exclusive
+          deals.
+        </p>
+        <a
+          href="#join-vip"
+          class="mt-6 inline-block bg-primary text-dark px-6 py-3 rounded-md text-lg font-medium hover:bg-opacity-90 transition"
+        >
+          Join Now
+        </a>
+      </div>
+    </section>
+
+    <!-- VIP Benefits -->
+    <section class="container mx-auto px-4 py-16 text-center">
+      <h2 class="text-4xl font-bold text-dark mb-8">
+        Why Join Our VIP Program?
+      </h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="p-6 bg-white shadow-lg rounded-lg">
+          <h3 class="text-2xl font-bold">🎉 Early Access</h3>
+          <p class="text-gray-600 mt-2">
+            Be the first to shop new collections before everyone else.
+          </p>
+        </div>
+        <div class="p-6 bg-white shadow-lg rounded-lg">
+          <h3 class="text-2xl font-bold">💰 Exclusive Discounts</h3>
+          <p class="text-gray-600 mt-2">
+            Get up to 20% off all products, only for VIP members.
+          </p>
+        </div>
+        <div class="p-6 bg-white shadow-lg rounded-lg">
+          <h3 class="text-2xl font-bold">🚚 Free Shipping</h3>
+          <p class="text-gray-600 mt-2">
+            Enjoy free shipping on all orders with no minimum spend.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Join VIP Section -->
+    <section id="join-vip" class="bg-gray-100 py-16 text-center">
+      <h2 class="text-4xl font-bold text-dark mb-6">Join the VIP Club Today</h2>
+      <p class="text-gray-700 max-w-3xl mx-auto mb-6">
+        Sign up today and start enjoying exclusive discounts, early product
+        access, and more.
+      </p>
+      <button
+        id="join-vip-btn"
+        class="bg-primary text-dark py-3 px-6 rounded-md text-lg font-medium hover:bg-opacity-90 transition"
+      >
+        Join VIP Now
+      </button>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-light py-6 text-center">
+      <p>&copy; 2024 Ciru Ciru wa Deras. All rights reserved.</p>
+    </footer>
+
+    <script type="module" src="/scripts/vip.js" defer></script>
+  </body>
+</html>
