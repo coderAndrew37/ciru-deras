@@ -50,7 +50,7 @@ function deliveryOptionsHTML(
       const checked = option.id === selectedOptionId ? "checked" : "";
 
       return `
-        <label class="flex items-center gap-2 text-green-600 font-semibold">
+        <label class="flex items-center gap-2 text-green-600 font-medium">
           <input
             type="radio"
             name="delivery-option-${productId}"
@@ -98,9 +98,9 @@ export async function renderOrderSummary() {
 
   if (!cart.length) {
     document.querySelector(".js-order-summary").innerHTML =
-      "<p>Your cart is empty.</p>";
-    renderPaymentSummary([], []); // Render empty summary
-    updateHeaderCartQuantity([]); // Update header
+      "<p class='text-lg font-medium text-gray-600'>Your cart is empty.</p>";
+    renderPaymentSummary([], []);
+    updateHeaderCartQuantity([]);
     return;
   }
 
@@ -110,27 +110,31 @@ export async function renderOrderSummary() {
     if (!product) return;
 
     orderSummaryHTML += `
-      <div class="border rounded-lg p-4 shadow-md mb-4">
-        <div class="text-idcPrimary font-semibold mb-2 text-green-600">
-          Delivery date: <span class="js-delivery-date-${product._id}">
+      <div class="border rounded-lg p-5 shadow-lg mb-6 bg-white">
+        <div class="text-green-600 font-semibold text-sm mb-3">
+          Delivery date: <span class="js-delivery-date-${
+            product._id
+          } text-gray-700">
             ${today.add(7, "days").format("dddd, MMMM D")}
           </span>
         </div>
-        <div class="grid grid-cols-3 gap-4 items-center">
+        <div class="grid grid-cols-3 gap-6 items-center">
           <img
-            class="col-span-1 max-w-full h-24 object-cover"
+            class="col-span-1 max-w-full h-28 object-cover rounded-lg"
             src="${product.image}"
             alt="${product.name}"
           />
-          <div class="col-span-2 space-y-2">
-            <div class="font-bold text-lg">${product.name}</div>
-            <div class="text-red-600 font-semibold"> ${formatCurrency(
+          <div class="col-span-2 space-y-3">
+            <div class="font-semibold text-lg text-gray-900">${
+              product.name
+            }</div>
+            <div class="text-red-600 font-bold text-lg">${formatCurrency(
               product.priceCents
             )}</div>
-            <div class="text-gray-500">
+            <div class="text-gray-700 text-sm">
               Quantity:
               <select
-                class="border rounded-lg p-2 js-quantity-select"
+                class="border rounded-lg px-2 py-1 text-sm js-quantity-select focus:outline-none focus:ring-2 focus:ring-blue-400"
                 data-product-id="${product._id}"
               >
                 ${Array.from({ length: 10 }, (_, i) => {
@@ -141,14 +145,14 @@ export async function renderOrderSummary() {
                 }).join("")}
               </select>
               <button
-                class="ml-2 px-4 py-2 bg-red-600 text-white font-bold rounded-lg js-delete-quantity-link hover:bg-red-700 active:bg-red-800"
+                class="ml-3 px-4 py-2 bg-red-600 text-white font-bold rounded-lg js-delete-quantity-link hover:bg-red-700 transition active:bg-red-800 text-sm"
                 data-product-id="${product._id}"
               >
                 Delete
               </button>
             </div>
             <div class="mt-4">
-              <div class="font-semibold">Delivery Options:</div>
+              <div class="font-semibold text-gray-800">Delivery Options:</div>
               ${deliveryOptionsHTML(product._id, deliveryOptions)}
             </div>
           </div>
@@ -160,8 +164,8 @@ export async function renderOrderSummary() {
   document.querySelector(".js-order-summary").innerHTML = orderSummaryHTML;
 
   attachCartEventListeners(cart, products, deliveryOptions);
-  renderPaymentSummary(cart, products, deliveryOptions); // Update totals
-  updateHeaderCartQuantity(cart); // Update header
+  renderPaymentSummary(cart, products, deliveryOptions);
+  updateHeaderCartQuantity(cart);
 }
 
 function attachCartEventListeners(cart, products, deliveryOptions) {

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shop - Ciru Deras</title>
+
+    <!-- Tailwind CSS -->
+    <link rel="stylesheet" href="/output.css" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body class="font-sans bg-light text-dark">
+    <!-- Navigation Bar (Import the same navbar as homepage) -->
+    <nav id="navbar"></nav>
+
+    <!-- Shop Page Header -->
+    <section class="container mx-auto px-4 py-16">
+      <h1 class="text-4xl font-bold text-center text-dark mb-8">
+        Shop Our Products
+      </h1>
+
+      <!-- Filter & Sort Section -->
+      <div class="flex flex-wrap justify-between mb-8">
+        <select id="category-filter" class="border px-4 py-2 rounded-md">
+          <option value="">All Categories</option>
+          <option value="Deras">Deras</option>
+          <option value="New Arrivals">New Arrivals</option>
+        </select>
+
+        <select id="sort-filter" class="border px-4 py-2 rounded-md">
+          <option value="">Sort By</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+          <option value="latest">Latest Arrivals</option>
+        </select>
+      </div>
+
+      <!-- Product Grid -->
+      <div
+        id="shop-products"
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+      ></div>
+    </section>
+
+    <!-- JavaScript -->
+    <script src="/scripts/shop.js" type="module"></script>
+  </body>
+</html>

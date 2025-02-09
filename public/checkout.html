@@ -8,43 +8,45 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   </head>
   <body class="font-idcSans bg-idcBackground text-idcText">
+    <!-- 🔥 Sticky Checkout Header -->
     <div
-      class="checkout-header bg-white shadow-md p-4 flex items-center justify-between"
+      class="checkout-header bg-white shadow-md px-6 py-4 flex items-center justify-between fixed top-0 left-0 w-full z-50"
     >
-      <div class="flex items-center">
-        <a href="/">
-          <img
-            class="hidden lg:block h-8"
-            src="/images/amazon-log.png"
-            alt="Your logo"
-          />
-          <img
-            class="block lg:hidden h-8"
-            src="/images/amazon-mobile-log.png"
-            alt="Your logo"
-          />
-        </a>
-      </div>
-      <div class="text-lg font-semibold">
+      <a href="/">
+        <img
+          class="hidden lg:block h-10"
+          src="/images/amazon-log.png"
+          alt="Your logo"
+        />
+        <img
+          class="block lg:hidden h-10"
+          src="/images/amazon-mobile-log.png"
+          alt="Your logo"
+        />
+      </a>
+      <h1 class="text-xl font-semibold text-dark">
         Checkout (<span class="js-cart-quantity">3</span> items)
-      </div>
-      <div>
-        <img src="/images/icons/checkout-lock-icon.png" alt="Secure Checkout" />
-      </div>
+      </h1>
+      <img
+        class="h-6"
+        src="/images/icons/checkout-lock-icon.png"
+        alt="Secure Checkout"
+      />
     </div>
 
-    <main class="max-w-7xl mx-auto p-6 mt-10">
-      <h1 class="text-xl font-bold mb-6">Review your order</h1>
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+    <!-- Main Checkout Section -->
+    <main class="max-w-7xl mx-auto px-6 py-10 mt-20">
+      <h2 class="text-2xl font-bold text-dark mb-6">Review Your Order</h2>
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <!-- Order Summary -->
         <div class="col-span-2">
           <div
-            class="js-order-summary border rounded-lg p-4 bg-white shadow"
+            class="js-order-summary border rounded-lg p-6 bg-white shadow"
           ></div>
         </div>
         <!-- Payment Summary -->
         <div
-          class="js-payment-summary border rounded-lg p-4 bg-white shadow"
+          class="js-payment-summary border rounded-lg p-6 bg-white shadow"
         ></div>
       </div>
     </main>
@@ -55,35 +57,41 @@
       class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
     >
       <div
-        class="modal-content bg-white p-6 rounded-xl shadow-lg w-full max-w-md flex flex-col"
+        class="modal-content bg-white p-6 rounded-xl shadow-lg w-full max-w-md relative"
       >
         <button
-          class="close-button text-xl font-bold text-gray-700 absolute top-4 right-6"
+          class="close-button text-2xl font-bold text-gray-700 absolute top-4 right-6 hover:text-gray-900"
         >
           &times;
         </button>
-        <h2 class="text-2xl font-bold mb-4 text-center">Order Details</h2>
+        <h2 class="text-2xl font-bold mb-4 text-center text-dark">
+          Order Details
+        </h2>
         <div class="modal-body overflow-y-auto max-h-96 space-y-4">
           <form id="orderDetailsForm" class="space-y-4">
-            <label for="name" class="block text-lg font-medium">Name</label>
+            <label for="name" class="block text-lg font-medium text-dark"
+              >Name</label
+            >
             <input
               type="text"
               id="name"
               name="name"
               required
-              class="w-full border rounded-lg px-4 py-2"
+              class="w-full border rounded-lg px-4 py-2 text-dark bg-light focus:ring focus:ring-primary"
             />
 
-            <label for="email" class="block text-lg font-medium">Email</label>
+            <label for="email" class="block text-lg font-medium text-dark"
+              >Email</label
+            >
             <input
               type="email"
               id="email"
               name="email"
               required
-              class="w-full border rounded-lg px-4 py-2"
+              class="w-full border rounded-lg px-4 py-2 text-dark bg-light focus:ring focus:ring-primary"
             />
 
-            <label for="phone" class="block text-lg font-medium"
+            <label for="phone" class="block text-lg font-medium text-dark"
               >Phone Number</label
             >
             <input
@@ -92,10 +100,10 @@
               name="phone"
               required
               placeholder="+254 712 345678"
-              class="w-full border rounded-lg px-4 py-2"
+              class="w-full border rounded-lg px-4 py-2 text-dark bg-light focus:ring focus:ring-primary"
             />
 
-            <label for="address" class="block text-lg font-medium"
+            <label for="address" class="block text-lg font-medium text-dark"
               >Address</label
             >
             <input
@@ -103,10 +111,10 @@
               id="address"
               name="address"
               required
-              class="w-full border rounded-lg px-4 py-2"
+              class="w-full border rounded-lg px-4 py-2 text-dark bg-light focus:ring focus:ring-primary"
             />
 
-            <label for="payment" class="block text-lg font-medium"
+            <label for="payment" class="block text-lg font-medium text-dark"
               >Payment Method</label
             >
             <input
@@ -115,7 +123,7 @@
               name="payment"
               value="Cash on Delivery"
               readonly
-              class="w-full border rounded-lg px-4 py-2 bg-gray-100"
+              class="w-full border rounded-lg px-4 py-2 bg-gray-100 text-gray-700"
             />
           </form>
         </div>
@@ -123,7 +131,7 @@
           <button
             type="submit"
             form="orderDetailsForm"
-            class="w-full bg-idcHighlight text-idcText font-semibold py-2 px-4 rounded-lg hover:bg-yellow-500"
+            class="w-full bg-primary text-white font-semibold py-2 px-4 rounded-lg hover:bg-yellow-500 transition"
           >
             Submit Order
           </button>
