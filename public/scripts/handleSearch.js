@@ -1,131 +1,192 @@
 import { baseUrl } from "./constants.js";
-import { renderProducts } from "./utils/renderUtils.js";
+import { renderProducts } from "./products.js";
+
 document.addEventListener("DOMContentLoaded", () => {
+  console.log("✅ DOM fully loaded, initializing search functionality...");
+
   const searchButton = document.querySelector(".js-search-button");
-  const searchBar = document.querySelector(".js-search-bar");
+  const searchInput = document.querySelector(".js-search-bar");
   const suggestionsDropdown = document.querySelector(
     ".js-suggestions-dropdown"
   );
+  const resultsContainer = document.querySelector(".js-products-grid");
+  const spinner = document.getElementById("loadingSpinner");
 
+  // Capture search filters
+  const searchFilters = {
+    category: document.querySelector("#search-category"),
+    size: document.querySelector("#size-filter"),
+    color: document.querySelector("#color-filter"),
+    sort: document.querySelector("#sort-filter"),
+  };
+
+  // 🚨 Check if any required elements are missing
+  if (!searchButton)
+    console.error("❌ handleSearch.js: searchButton NOT found.");
+  if (!searchInput) console.error("❌ handleSearch.js: searchInput NOT found.");
+  if (!suggestionsDropdown)
+    console.error("❌ handleSearch.js: suggestionsDropdown NOT found.");
+  if (!resultsContainer)
+    console.error("❌ handleSearch.js: resultsContainer NOT found.");
+  if (!spinner) console.error("❌ handleSearch.js: spinner NOT found.");
+
+  // Stop execution if any essential element is missing
+  if (
+    !searchButton ||
+    !searchInput ||
+    !suggestionsDropdown ||
+    !resultsContainer ||
+    !spinner
+  ) {
+    console.error(
+      "❌ handleSearch.js: Missing one or more required elements. Stopping execution."
+    );
+    return;
+  }
+
+  console.log("✅ All required search elements found!");
+
+  // Attach event listeners
   searchButton.addEventListener("click", handleSearch);
-  searchBar.addEventListener("input", handleSuggestions); // Trigger suggestions on input
-  searchBar.addEventListener("keypress", (event) => {
-    if (event.key === "Enter") {
-      handleSearch();
+  searchInput.addEventListener("input", debounce(handleSuggestions, 300));
+  searchInput.addEventListener("keypress", (event) => {
+    if (event.key === "Enter") handleSearch();
+  });
+
+  document.addEventListener("click", (event) => {
+    if (
+      !event.target.closest(".js-suggestions-dropdown") &&
+      !event.target.closest(".js-search-bar")
+    ) {
+      suggestionsDropdown.classList.add("hidden");
     }
   });
 });
 
+// Debounce function to limit API calls
+function debounce(func, delay) {
+  let timeout;
+  return (...args) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func(...args), delay);
+  };
+}
+
+// Handle search suggestions
 async function handleSuggestions(event) {
   const query = event.target.value.trim();
   const suggestionsDropdown = document.querySelector(
     ".js-suggestions-dropdown"
   );
 
-  if (query.length === 0) {
-    suggestionsDropdown.innerHTML = ""; // Clear suggestions if input is empty
+  if (!query) {
+    suggestionsDropdown.innerHTML = "";
+    suggestionsDropdown.classList.add("hidden");
     return;
   }
 
-  console.log("Searching suggestions for:", query); // Debugging log
-
   try {
     const suggestions = await fetchSuggestions(query);
-    console.log("Fetched suggestions:", suggestions); // Debugging log
-
     if (suggestions.length > 0) {
       suggestionsDropdown.innerHTML = suggestions
         .map(
-          (suggestion) =>
-            `<div class="suggestion-item">${suggestion.name}</div>`
+          (s) =>
+            `<div class="suggestion-item px-4 py-2 cursor-pointer">${s.name}</div>`
         )
         .join("");
+      suggestionsDropdown.classList.remove("hidden");
 
-      // Attach click event to each suggestion item
       document.querySelectorAll(".suggestion-item").forEach((item) => {
         item.addEventListener("click", () => {
-          document.querySelector(".search-bar").value = item.textContent;
-          handleSearch(); // Trigger search with selected suggestion
-          suggestionsDropdown.innerHTML = ""; // Clear suggestions after selection
+          document.querySelector(".js-search-bar").value = item.textContent;
+          handleSearch();
+          suggestionsDropdown.classList.add("hidden");
         });
       });
     } else {
-      suggestionsDropdown.innerHTML = "<p>No suggestions found.</p>";
+      suggestionsDropdown.innerHTML =
+        "<p class='px-4 py-2'>No suggestions found.</p>";
+      suggestionsDropdown.classList.remove("hidden");
     }
   } catch (error) {
-    console.error("Error fetching suggestions:", error);
-    suggestionsDropdown.innerHTML = "<p>Error fetching suggestions.</p>";
+    console.error("❌ Error fetching suggestions:", error);
+    suggestionsDropdown.innerHTML =
+      "<p class='px-4 py-2 text-red-500'>Error fetching suggestions.</p>";
   }
 }
 
-const suggestionsCache = {}; // Cache object for suggestions
+// Cache search suggestions
+const suggestionsCache = {};
 
 async function fetchSuggestions(query) {
-  if (suggestionsCache[query]) {
-    console.log("Using cached suggestions for:", query);
-    return suggestionsCache[query];
-  }
+  if (suggestionsCache[query]) return suggestionsCache[query];
 
   try {
     const response = await fetch(
       `${baseUrl}/api/products/suggestions?q=${encodeURIComponent(query)}`
     );
-    if (!response.ok) {
-      throw new Error("Failed to fetch suggestions");
-    }
+    if (!response.ok) throw new Error("Failed to fetch suggestions");
     const data = await response.json();
-    suggestionsCache[query] = Array.isArray(data) ? data : []; // Cache the results
+    suggestionsCache[query] = Array.isArray(data) ? data : [];
     return suggestionsCache[query];
   } catch (error) {
-    console.error("Error fetching suggestions:", error);
+    console.error("❌ Error fetching suggestions:", error);
     return [];
   }
 }
 
+// Handle search function
 async function handleSearch() {
   const searchTerm = document.querySelector(".js-search-bar").value.trim();
   const resultsContainer = document.querySelector(".js-products-grid");
   const spinner = document.getElementById("loadingSpinner");
 
-  if (searchTerm) {
-    // Show spinner and clear existing content
-    spinner.classList.remove("hidden");
-    resultsContainer.innerHTML = "";
+  const filters = {
+    category: document.querySelector("#search-category")?.value || "",
+    size: document.querySelector("#size-filter")?.value || "",
+    color: document.querySelector("#color-filter")?.value || "",
+    sort: document.querySelector("#sort-filter")?.value || "",
+  };
 
-    try {
-      const results = await searchProducts(searchTerm); // Fetch search results
-      console.log("Search results:", results);
+  if (!searchTerm && !filters.category && !filters.size && !filters.color) {
+    console.warn("⚠️ Search term or filters required");
+    return;
+  }
 
-      if (Array.isArray(results) && results.length > 0) {
-        renderProducts(results, ".js-products-grid"); // Render results
-        document
-          .querySelector("#featured-products")
-          .scrollIntoView({ behavior: "smooth" });
-      } else {
-        resultsContainer.innerHTML = "<p>No results found.</p>";
-      }
-    } catch (error) {
-      console.error("Search failed:", error);
-      resultsContainer.innerHTML =
-        "<p>Error loading search results. Please try again later.</p>";
-    } finally {
-      spinner.classList.add("hidden"); // Hide spinner
+  spinner.classList.remove("hidden");
+  resultsContainer.innerHTML = "";
+
+  try {
+    const results = await searchProducts(searchTerm, filters);
+    if (results.length > 0) {
+      renderProducts(results, resultsContainer);
+    } else {
+      resultsContainer.innerHTML = "<p>No results found.</p>";
     }
+  } catch (error) {
+    console.error("❌ Search failed:", error);
+    resultsContainer.innerHTML =
+      "<p class='text-red-500'>⚠️ Error loading search results.</p>";
+  } finally {
+    spinner.classList.add("hidden");
   }
 }
 
-async function searchProducts(query) {
+// Search products with filters
+async function searchProducts(query, { category, size, color, sort }) {
+  let url = `${baseUrl}/api/products/search?q=${encodeURIComponent(query)}`;
+  if (category) url += `&category=${encodeURIComponent(category)}`;
+  if (size) url += `&size=${encodeURIComponent(size)}`;
+  if (color) url += `&color=${encodeURIComponent(color)}`;
+  if (sort) url += `&sort=${encodeURIComponent(sort)}`;
+
   try {
-    const response = await fetch(
-      `${baseUrl}/api/products/search?q=${encodeURIComponent(query)}`
-    );
-    if (!response.ok) {
-      throw new Error("Failed to fetch search results");
-    }
+    const response = await fetch(url);
+    if (!response.ok) throw new Error("Failed to fetch search results");
     const data = await response.json();
     return Array.isArray(data.products) ? data.products : [];
   } catch (error) {
-    console.error("Error fetching search results:", error);
-    return []; // Ensure an array is always returned
+    console.error("❌ Error fetching search results:", error);
+    return [];
   }
 }

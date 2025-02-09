@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Clothing Store</title>
+    <title>Ciru Ciru wa Deras</title>
 
     <!-- Tailwind CSS -->
     <link rel="stylesheet" href="/output.css" />
@@ -36,60 +36,101 @@
           <li><a href="#" class="hover:text-primary">Home</a></li>
           <li><a href="#" class="hover:text-primary">Shop</a></li>
           <li><a href="#" class="hover:text-primary">Collections</a></li>
-          <a href="/wishlist.html" class="relative hover:text-primary">
-            <i class="fas fa-heart"></i>
-            <span
-              class="js-wishlist-quantity absolute -top-2 -right-3 bg-primary text-dark rounded-full text-xs font-bold w-5 h-5 flex items-center justify-center hidden"
-            >
-              0
-            </span>
-          </a>
-
+          <li>
+            <a href="/wishlist.html" class="relative hover:text-primary">
+              <i class="fas fa-heart"></i>
+              <span
+                class="js-wishlist-quantity absolute -top-2 -right-3 bg-primary text-dark rounded-full text-xs font-bold w-5 h-5 flex items-center justify-center hidden"
+              >
+                0
+              </span>
+            </a>
+          </li>
           <li><a href="/about.html" class="hover:text-primary">About</a></li>
           <li><a href="#" class="hover:text-primary">Contact</a></li>
         </ul>
 
         <!-- Icons -->
-        <!-- Search Button in Navbar -->
         <div class="flex items-center space-x-4">
-          <a href="#" id="search-btn" class="hover:text-primary">
+          <!-- Search Button -->
+          <button id="toggle-search" class="hover:text-primary">
             <i class="fas fa-search"></i>
-          </a>
+          </button>
+
           <a href="#" class="hover:text-primary"><i class="fas fa-user"></i></a>
           <a href="/checkout" class="relative hover:text-primary">
             <i class="fas fa-shopping-cart"></i>
             <span
               class="js-cart-quantity absolute -top-2 -right-3 bg-primary text-dark rounded-full text-xs font-bold w-5 h-5 flex items-center justify-center hidden"
-              >0</span
             >
+              0
+            </span>
           </a>
         </div>
-
-        <!-- Search Bar -->
-        <div
-          id="search-bar"
-          class="fixed top-0 left-0 w-full bg-dark bg-opacity-90 text-light z-50 hidden transform -translate-y-full transition-transform duration-500 ease-in-out"
-        >
-          <div class="container mx-auto px-4 py-4 flex items-center">
-            <input
-              type="text"
-              placeholder="Search our store..."
-              class="w-full bg-light text-dark px-4 py-2 rounded-md outline-none"
-            />
-            <button id="close-search" class="ml-4 text-primary">
-              <i class="fas fa-times"></i>
-            </button>
-          </div>
-        </div>
-
-        <!-- Mobile Menu Button -->
-        <button
-          id="menu-btn"
-          class="block md:hidden text-primary focus:outline-none"
-        >
-          <i class="fas fa-bars"></i>
-        </button>
       </div>
+
+      <!-- Search Bar -->
+      <div
+        id="search-bar"
+        class="fixed top-0 left-0 w-full bg-dark bg-opacity-90 text-light z-50 hidden transition-all duration-300 ease-in-out transform -translate-y-full"
+      >
+        <div class="container mx-auto px-4 py-4 flex items-center space-x-2">
+          <!-- Category Filter -->
+          <select
+            id="search-category"
+            class="bg-light text-dark px-3 py-2 rounded-md outline-none"
+          >
+            <option value="">All Categories</option>
+            <option value="Deras">Deras</option>
+            <option value="New Arrivals">New Arrivals</option>
+          </select>
+
+          <!-- Search Input -->
+          <input
+            type="text"
+            id="search-input"
+            class="js-search-bar w-full bg-light text-dark px-4 py-2 rounded-md outline-none"
+            placeholder="Search products..."
+          />
+
+          <!-- Search Button -->
+          <button
+            id="search-button"
+            class="js-search-button ml-4 bg-primary text-dark px-4 py-2 rounded-md"
+          >
+            <i class="fas fa-search"></i>
+          </button>
+
+          <!-- Close Button -->
+          <button id="close-search" class="ml-4 text-primary">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Search Suggestions Dropdown -->
+      <div
+        id="search-suggestions"
+        class="js-suggestions-dropdown absolute left-0 w-full bg-light text-dark shadow-md rounded-md hidden"
+      ></div>
+
+      <!-- Search Results Container -->
+      <div
+        class="js-products-grid container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8"
+      ></div>
+
+      <!-- Loading Spinner -->
+      <div id="loadingSpinner" class="hidden text-center py-4">
+        <i class="fas fa-spinner fa-spin text-primary text-3xl"></i>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button
+        id="menu-btn"
+        class="block md:hidden text-primary focus:outline-none"
+      >
+        <i class="fas fa-bars"></i>
+      </button>
 
       <!-- Mobile Dropdown Menu -->
       <div
@@ -99,18 +140,17 @@
         <ul class="space-y-4 py-4 text-center text-sm">
           <li><a href="#" class="hover:text-primary block">Home</a></li>
           <li><a href="#" class="hover:text-primary block">Shop</a></li>
+          <li><a href="#" class="hover:text-primary block">Collections</a></li>
           <li>
-            <a href="#" class="hover:text-primary block">Collections</a>
+            <a href="/wishlist.html" class="relative hover:text-primary">
+              <i class="fas fa-heart"></i>
+              <span
+                class="js-wishlist-quantity absolute -top-2 -right-3 bg-primary text-dark rounded-full text-xs font-bold w-5 h-5 flex items-center justify-center hidden"
+              >
+                0
+              </span>
+            </a>
           </li>
-          <a href="/wishlist.html" class="relative hover:text-primary">
-            <i class="fas fa-heart"></i>
-            <span
-              class="js-wishlist-quantity absolute -top-2 -right-3 bg-primary text-dark rounded-full text-xs font-bold w-5 h-5 flex items-center justify-center hidden"
-            >
-              0
-            </span>
-          </a>
-
           <li>
             <a href="/about.html" class="hover:text-primary block">About</a>
           </li>
@@ -118,23 +158,6 @@
         </ul>
       </div>
     </nav>
-
-    <!-- Search Bar (Hidden Initially) -->
-    <div
-      id="search-bar"
-      class="absolute top-16 left-0 w-full bg-dark text-light hidden z-10"
-    >
-      <div class="container mx-auto px-4 py-2 flex items-center">
-        <input
-          type="text"
-          placeholder="Search our store..."
-          class="w-full bg-light text-dark px-4 py-2 rounded-md outline-none"
-        />
-        <button id="close-search" class="ml-4 text-primary">
-          <i class="fas fa-times"></i>
-        </button>
-      </div>
-    </div>
 
     <!-- Hero Section -->
     <section id="carousel" class="relative w-full h-[80vh] overflow-hidden">
@@ -248,6 +271,44 @@
       </button>
     </section>
 
+    <!-- Filtering & Sorting Controls -->
+    <section
+      id="filters"
+      class="container mx-auto px-4 py-6 bg-gray-100 rounded-lg shadow-md mb-6"
+    >
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- Category Filter -->
+        <select id="filter-category" class="w-full p-2 rounded border">
+          <option value="">All Categories</option>
+          <option value="Deras">Deras</option>
+          <option value="New Arrivals">New Arrivals</option>
+        </select>
+
+        <!-- Price Filter -->
+        <select id="filter-price" class="w-full p-2 rounded border">
+          <option value="">All Prices</option>
+          <option value="low">Low to High</option>
+          <option value="high">High to Low</option>
+        </select>
+
+        <!-- Size Filter -->
+        <select id="filter-size" class="w-full p-2 rounded border">
+          <option value="">All Sizes</option>
+          <option value="S">Small</option>
+          <option value="M">Medium</option>
+          <option value="L">Large</option>
+        </select>
+
+        <!-- Color Filter -->
+        <select id="filter-color" class="w-full p-2 rounded border">
+          <option value="">All Colors</option>
+          <option value="Red">Red</option>
+          <option value="Blue">Blue</option>
+          <option value="Green">Green</option>
+        </select>
+      </div>
+    </section>
+
     <section id="deras" class="container mx-auto px-4 py-16">
       <h2 class="text-4xl font-bold text-center text-dark mb-8">
         Shop Our Deras
@@ -300,7 +361,7 @@
       </div>
     </section>
 
-    <!-- AI-Powered Recommendations -->
+    <!-- 
     <section id="ai-recommendations" class="container mx-auto px-4 py-16">
       <h2 class="text-4xl font-bold text-center text-dark mb-8">
         ✨ AI-Powered Recommendations
@@ -328,9 +389,10 @@
         id="recommendation-results"
         class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-8"
       >
-        <!-- AI product recommendations will appear here -->
+         AI product recommendations will appear here 
       </div>
     </section>
+    -->
 
     <!-- Testimonial Submission Modal -->
     <div

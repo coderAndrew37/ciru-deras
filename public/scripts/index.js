@@ -3,7 +3,7 @@ import "./carousel.js";
 import "./searchToggle.js";
 import "./modalToggle.js";
 import "./testimonials.js";
-import "./reccomendations.js";
+import "./handleSearch.js";
 import { openModal, closeModal, initializeCategories } from "./products.js";
 
 // Ensure DOM is fully loaded before running scripts

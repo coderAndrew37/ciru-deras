@@ -3,24 +3,48 @@ import { isAuthenticated } from "./utils/cartUtils.js";
 import { baseUrl } from "./constants.js";
 import { toggleWishlist } from "./wishList.js";
 
-// Fetch products by category
-async function fetchProducts(category, page = 1, limit = 12) {
+// Fetch products with filters
+async function fetchProducts(
+  category = "",
+  price = "",
+  size = "",
+  color = "",
+  sort = ""
+) {
   try {
-    const response = await fetch(
-      `${baseUrl}/api/products?category=${category}&page=${page}&limit=${limit}`
-    );
+    let url = `${baseUrl}/api/products?`;
+    if (category) url += `category=${encodeURIComponent(category)}&`;
+    if (size) url += `size=${encodeURIComponent(size)}&`;
+    if (color) url += `color=${encodeURIComponent(color)}&`;
+    if (price) url += `sort=price_${price}&`; // 'price_low' or 'price_high'
+    if (sort) url += `sort=${encodeURIComponent(sort)}&`;
+
+    const response = await fetch(url);
     if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
 
     const data = await response.json();
     return data.products || [];
   } catch (error) {
-    console.error(`❌ Error fetching products for ${category}:`, error);
+    console.error(`❌ Error fetching products:`, error);
     return [];
   }
 }
 
+// Handle filtering & sorting changes
+async function handleFilters() {
+  console.log("🔍 Applying filters...");
+
+  const category = document.getElementById("filter-category").value;
+  const price = document.getElementById("filter-price").value;
+  const size = document.getElementById("filter-size").value;
+  const color = document.getElementById("filter-color").value;
+
+  const products = await fetchProducts(category, price, size, color);
+  renderProducts(products, document.querySelector("#deras .grid"));
+}
+
 // Render products dynamically
-function renderProducts(products, container) {
+export function renderProducts(products, container) {
   if (!container) {
     console.error(`❌ Container not found`);
     return;
@@ -230,6 +254,20 @@ async function handleAddToCart(productId) {
 // Ensure the DOM is fully loaded before running scripts
 document.addEventListener("DOMContentLoaded", () => {
   initializeCategories();
+
+  // Attach filter & sorting event listeners
+  document
+    .getElementById("filter-category")
+    ?.addEventListener("change", handleFilters);
+  document
+    .getElementById("filter-price")
+    ?.addEventListener("change", handleFilters);
+  document
+    .getElementById("filter-size")
+    ?.addEventListener("change", handleFilters);
+  document
+    .getElementById("filter-color")
+    ?.addEventListener("change", handleFilters);
 
   // Attach close modal event
   document

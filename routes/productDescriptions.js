@@ -1,12 +1,15 @@
-import express from "express";
-import dotenv from "dotenv";
-import axios from "axios";
-import Product from "../models/Product.js";
+const express = require("express");
+const dotenv = require("dotenv");
+const axios = require("axios");
+const Product = require("../models/Product");
 
 dotenv.config();
 const router = express.Router();
 
-// AI Prompt for Product Descriptions
+const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY;
+const DEEPSEEK_ENDPOINT = "https://api.deepseek.com/v1/chat/completions";
+
+// ✅ AI Prompt for Product Descriptions
 const DESCRIPTION_PROMPT = `
 You are an AI product description writer for Ciru Ciru wa Deras.
 Your job:
@@ -19,6 +22,7 @@ Product: Elegant Silk Deras
 Description: "Experience luxury with our Elegant Silk Deras, designed for a timeless look. Made from premium silk, it's lightweight and perfect for special occasions."
 `;
 
+// ✅ Generate AI-Powered Product Descriptions
 router.post("/:productId/generate-description", async (req, res) => {
   try {
     const product = await Product.findById(req.params.productId);
@@ -27,26 +31,27 @@ router.post("/:productId/generate-description", async (req, res) => {
     }
 
     const response = await axios.post(
-      "https://api.deepseek.com/v1/chat/completions",
+      DEEPSEEK_ENDPOINT,
       {
         model: "deepseek-chat",
         messages: [
           { role: "system", content: DESCRIPTION_PROMPT },
           {
             role: "user",
-            content: `Generate a description for ${product.name} made of ${product.material}.`,
+            content: `Generate a description for the ${product.name} made of ${product.material}, perfect for ${product.category}.`,
           },
         ],
         max_tokens: 150,
       },
       {
         headers: {
-          Authorization: `Bearer ${process.env.DEEPSEEK_API_KEY}`,
+          Authorization: `Bearer ${DEEPSEEK_API_KEY}`,
           "Content-Type": "application/json",
         },
       }
     );
 
+    // ✅ Save AI-generated description to MongoDB
     product.description = response.data.choices[0].message.content;
     await product.save();
 
@@ -60,4 +65,4 @@ router.post("/:productId/generate-description", async (req, res) => {
   }
 });
 
-export default router;
+module.exports = router;

@@ -72,32 +72,39 @@ router.post("/", async (req, res) => {
 
 // Search products by name, keywords, category, or size
 router.get("/search", async (req, res) => {
-  const query = req.query.q;
-  const category = req.query.category; // Optional category filter
-  const size = req.query.size; // Optional size filter
-  const color = req.query.color; // Optional color filter
+  const query = req.query.q || "";
+  const category = req.query.category;
+  const size = req.query.size;
+  const color = req.query.color;
+  const sort = req.query.sort;
   const page = parseInt(req.query.page, 10) || 1;
-  const limit = parseInt(req.query.limit, 10) || 10;
+  const limit = parseInt(req.query.limit, 10) || 12;
 
-  if (!query) {
-    return res.status(400).json({ message: "Query is required" });
-  }
+  // Build filter conditions
+  const filter = {
+    $or: [
+      { name: { $regex: query, $options: "i" } },
+      { keywords: { $regex: query, $options: "i" } },
+    ],
+  };
+
+  if (category) filter.category = category;
+  if (size) filter.sizes = size;
+  if (color) filter["colors.name"] = color;
 
   try {
-    // Build search filter
-    const filter = {
-      $or: [
-        { name: { $regex: query, $options: "i" } },
-        { keywords: { $regex: query, $options: "i" } },
-      ],
-    };
+    // Apply sorting (price, rating)
+    const sortOption =
+      sort === "price-asc"
+        ? { priceCents: 1 }
+        : sort === "price-desc"
+        ? { priceCents: -1 }
+        : sort === "rating"
+        ? { "rating.stars": -1 }
+        : {};
 
-    if (category) filter.category = category;
-    if (size) filter.sizes = size;
-    if (color) filter["colors.name"] = color; // Filter by color name
-
-    // Fetch products
     const products = await Product.find(filter)
+      .sort(sortOption)
       .skip((page - 1) * limit)
       .limit(limit)
       .select("name image rating priceCents colors sizes");
@@ -105,15 +112,10 @@ router.get("/search", async (req, res) => {
     const totalProducts = await Product.countDocuments(filter);
     const totalPages = Math.ceil(totalProducts / limit);
 
-    res.json({
-      products,
-      currentPage: page,
-      totalPages,
-      totalProducts,
-    });
+    res.json({ products, currentPage: page, totalPages, totalProducts });
   } catch (error) {
-    console.error("Error during product search:", error);
-    res.status(500).json({ error: "Server error during search" });
+    console.error("❌ Error during search:", error);
+    res.status(500).json({ error: "Failed to fetch products" });
   }
 });
 
