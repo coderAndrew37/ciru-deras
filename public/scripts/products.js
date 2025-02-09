@@ -2,6 +2,7 @@ import { addToCart, updateCartQuantity } from "../data/cart.js";
 import { isAuthenticated } from "./utils/cartUtils.js";
 import { baseUrl } from "./constants.js";
 import { toggleWishlist } from "./wishList.js";
+import { generateShareButtons } from "./socialShare.js";
 
 // Fetch products with filters
 async function fetchProducts(
@@ -111,6 +112,9 @@ export function renderProducts(products, container) {
     productCard
       .querySelector(".quick-add-btn")
       .addEventListener("click", () => openModal(product));
+
+    const shareButtons = generateShareButtons(product);
+    productCard.appendChild(shareButtons);
 
     container.appendChild(productCard);
   });
