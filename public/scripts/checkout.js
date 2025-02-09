@@ -1,6 +1,7 @@
 import { checkAuthentication } from "./utils/authUtils.js";
 import { renderOrderSummary } from "./renderOrderSummary.js";
 import { updateCartQuantity } from "../data/cart.js";
+import "./breadcrumb.js";
 
 let cartItems = [];
 let totalCents = 0;

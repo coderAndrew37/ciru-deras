@@ -6,6 +6,7 @@ const { Product } = require("./models/product"); // Import the Product model
 const dbURI = process.env.MONGODB_URI; // Replace with your DB URI
 
 // Sample Deras products
+// Updated Deras & Kaftans product list
 const products = [
   {
     image: "/images/products/dera1.jpg",
@@ -20,8 +21,8 @@ const products = [
     ],
     rating: { stars: 4.7, count: 95 },
     stock: 80,
-    priceCents: 4999,
-    salePriceCents: 3999,
+    priceCents: 49900,
+    salePriceCents: 39900,
     keywords: ["dera", "traditional", "elegant"],
   },
   {
@@ -36,8 +37,8 @@ const products = [
     ],
     rating: { stars: 4.5, count: 78 },
     stock: 65,
-    priceCents: 4499,
-    salePriceCents: 3799,
+    priceCents: 44900,
+    salePriceCents: 37900,
     keywords: ["dera", "casual", "lightweight"],
   },
   {
@@ -52,8 +53,8 @@ const products = [
     ],
     rating: { stars: 4.9, count: 110 },
     stock: 35,
-    priceCents: 5299,
-    salePriceCents: 4699,
+    priceCents: 52900,
+    salePriceCents: 46900,
     keywords: ["dera", "classic", "timeless"],
   },
   {
@@ -69,9 +70,120 @@ const products = [
     ],
     rating: { stars: 4.6, count: 60 },
     stock: 22,
-    priceCents: 5799,
+    priceCents: 57900,
     salePriceCents: null,
     keywords: ["dera", "modern", "fashion"],
+  },
+  // Newly Added Kaftans
+  {
+    image: "/images/products/dera5.jpg",
+    name: "Maroon Pixelated Kaftan",
+    description:
+      "Elegant maroon kaftan with a pixelated pattern and decorative details.",
+    category: "Deras",
+    sizes: ["Free Size"],
+    colors: [
+      {
+        name: "Maroon",
+        image: "/images/products/kaftan_maroon.jpg",
+        stock: 25,
+      },
+    ],
+    rating: { stars: 4.8, count: 50 },
+    stock: 25,
+    priceCents: 35000,
+    salePriceCents: null,
+    keywords: ["kaftan", "elegant", "maroon"],
+  },
+  {
+    image: "/images/products/dera6.jpg",
+    name: "Red Feather-Pattern Kaftan",
+    description:
+      "Stylish red kaftan featuring a stunning feather-like pattern.",
+    category: "Deras",
+    sizes: ["Free Size"],
+    colors: [
+      { name: "Red", image: "/images/products/kaftan_red.jpg", stock: 20 },
+    ],
+    rating: { stars: 4.7, count: 45 },
+    stock: 20,
+    priceCents: 38000,
+    salePriceCents: null,
+    keywords: ["kaftan", "feather pattern", "red"],
+  },
+  {
+    image: "/images/products/dera7.jpg",
+    name: "Cream & Yellow Abstract Kaftan",
+    description: "Unique cream and yellow kaftan with an abstract pattern.",
+    category: "Deras",
+    sizes: ["Free Size"],
+    colors: [
+      {
+        name: "Cream/Yellow",
+        image: "/images/products/kaftan_cream_yellow.jpg",
+        stock: 30,
+      },
+    ],
+    rating: { stars: 4.6, count: 38 },
+    stock: 30,
+    priceCents: 32000,
+    salePriceCents: null,
+    keywords: ["kaftan", "abstract", "cream yellow"],
+  },
+  {
+    image: "/images/products/dera8.jpg",
+    name: "Maroon Pixelated Kaftan",
+    description:
+      "Elegant maroon kaftan with a pixelated pattern and decorative details.",
+    category: "Deras",
+    sizes: ["Free Size"],
+    colors: [
+      {
+        name: "Maroon",
+        image: "/images/products/kaftan_maroon.jpg",
+        stock: 25,
+      },
+    ],
+    rating: { stars: 4.8, count: 50 },
+    stock: 25,
+    priceCents: 35000,
+    salePriceCents: null,
+    keywords: ["kaftan", "elegant", "maroon"],
+  },
+  {
+    image: "/images/products/dera9.jpg",
+    name: "Red Feather-Pattern Kaftan",
+    description:
+      "Stylish red kaftan featuring a stunning feather-like pattern.",
+    category: "Deras",
+    sizes: ["Free Size"],
+    colors: [
+      { name: "Red", image: "/images/products/kaftan_red.jpg", stock: 20 },
+    ],
+    rating: { stars: 4.7, count: 45 },
+    stock: 20,
+    priceCents: 38000,
+    salePriceCents: null,
+    keywords: ["kaftan", "feather pattern", "red"],
+  },
+  {
+    image: "/images/products/dera10.jpg",
+    name: "Cream & Yellow Abstract Kaftan",
+    description: "Unique cream and yellow kaftan with an abstract pattern.",
+    category: "Deras",
+    sizes: ["Free Size"],
+    colors: [
+      {
+        name: "Cream/Yellow",
+        image: "/images/products/kaftan_cream_yellow.jpg",
+        stock: 30,
+      },
+    ],
+    rating: { stars: 4.6, count: 38 },
+    stock: 30,
+    priceCents: 32000,
+    salePriceCents: null,
+    keywords: ["kaftan", "abstract", "cream yellow"],
   },
 ];
 

@@ -87,7 +87,7 @@ export function renderProducts(products, container) {
     }" class="w-full h-72 object-cover group-hover:opacity-80 transition" />
       <div class="p-4">
         <h3 class="text-lg font-semibold text-dark">${product.name}</h3>
-        <p class="text-primary font-bold mt-2">$${(
+        <p class="text-primary font-bold mt-2">Ksh ${(
           product.priceCents / 100
         ).toFixed(2)}</p>
       </div>
@@ -203,9 +203,9 @@ export function openModal(product) {
   // Populate modal details
   modal.querySelector("img").src = product.image;
   modal.querySelector("h3").textContent = product.name;
-  modal.querySelector("p").textContent = `$${(product.priceCents / 100).toFixed(
-    2
-  )}`;
+  modal.querySelector("p").textContent = `Ksh ${(
+    product.priceCents / 100
+  ).toFixed(2)}`;
 
   // Reset & populate size dropdown
   const sizeDropdown = modal.querySelector("#size");

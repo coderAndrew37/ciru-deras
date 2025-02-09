@@ -17,6 +17,14 @@
   }
 }
 
+#breadcrumb li {
+  display: flex;
+  align-items: center;
+}
+#breadcrumb span {
+  margin: 0 6px;
+}
+
 /* Add hover effects for active links */
 
 nav a:hover {

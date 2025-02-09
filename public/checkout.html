@@ -6,8 +6,35 @@
     <title>Checkout</title>
     <link rel="stylesheet" href="/output.css" />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://yourwebsite.com"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Shop",
+            "item": "https://yourwebsite.com/shop"
+          }
+        ]
+      }
+    </script>
   </head>
   <body class="font-idcSans bg-idcBackground text-idcText">
+    <!-- Breadcrumbs -->
+    <nav class="text-sm text-gray-600 py-4 px-6 mt-20">
+      <ol id="breadcrumb" class="flex items-center space-x-2">
+        <!-- Breadcrumbs will be generated here dynamically -->
+      </ol>
+    </nav>
+
     <!-- 🔥 Sticky Checkout Header -->
     <div
       class="checkout-header bg-white shadow-md px-6 py-4 flex items-center justify-between fixed top-0 left-0 w-full z-50"
@@ -15,12 +42,12 @@
       <a href="/">
         <img
           class="hidden lg:block h-10"
-          src="/images/amazon-log.png"
+          src="/images/logo.jpg"
           alt="Your logo"
         />
         <img
           class="block lg:hidden h-10"
-          src="/images/amazon-mobile-log.png"
+          src="images/logo.jpg"
           alt="Your logo"
         />
       </a>
