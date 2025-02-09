@@ -34,12 +34,30 @@ async function fetchProducts(
 async function handleFilters() {
   console.log("🔍 Applying filters...");
 
-  const category = document.getElementById("filter-category").value;
-  const price = document.getElementById("filter-price").value;
-  const size = document.getElementById("filter-size").value;
-  const color = document.getElementById("filter-color").value;
+  const category = document.getElementById("filter-category")?.value || "";
+  const price = document.getElementById("filter-price")?.value || "";
+  const size = document.getElementById("filter-size")?.value || "";
+  const color = document.getElementById("filter-color")?.value || "";
 
-  const products = await fetchProducts(category, price, size, color);
+  // Save current filter settings
+  const filters = { category, price, size, color };
+  localStorage.setItem("productFilters", JSON.stringify(filters));
+
+  // Fetch filtered products
+  let products = await fetchProducts(category);
+
+  // Apply size & color filters manually (if needed)
+  if (size) products = products.filter((p) => p.sizes.includes(size));
+  if (color) products = products.filter((p) => p.color === color);
+
+  // Apply sorting
+  if (price === "low-to-high") {
+    products.sort((a, b) => a.priceCents - b.priceCents);
+  } else if (price === "high-to-low") {
+    products.sort((a, b) => b.priceCents - a.priceCents);
+  }
+
+  // Update the UI with new products
   renderProducts(products, document.querySelector("#deras .grid"));
 }
 
@@ -253,9 +271,10 @@ async function handleAddToCart(productId) {
 
 // Ensure the DOM is fully loaded before running scripts
 document.addEventListener("DOMContentLoaded", () => {
+  applySavedFilters();
   initializeCategories();
 
-  // Attach filter & sorting event listeners
+  // Attach event listeners to filter dropdowns
   document
     .getElementById("filter-category")
     ?.addEventListener("change", handleFilters);
@@ -269,7 +288,6 @@ document.addEventListener("DOMContentLoaded", () => {
     .getElementById("filter-color")
     ?.addEventListener("change", handleFilters);
 
-  // Attach close modal event
   document
     .querySelector("#modal-product1")
     ?.addEventListener("click", (event) => {
@@ -281,3 +299,15 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 });
+
+// Apply saved filters on page load
+function applySavedFilters() {
+  const filters = JSON.parse(localStorage.getItem("productFilters")) || {};
+
+  document.getElementById("filter-category").value = filters.category || "";
+  document.getElementById("filter-price").value = filters.price || "";
+  document.getElementById("filter-size").value = filters.size || "";
+  document.getElementById("filter-color").value = filters.color || "";
+
+  handleFilters(); // Re-fetch products based on saved filters
+}

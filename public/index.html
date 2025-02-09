@@ -273,39 +273,84 @@
 
     <!-- Filtering & Sorting Controls -->
     <section
-      id="filters"
-      class="container mx-auto px-4 py-6 bg-gray-100 rounded-lg shadow-md mb-6"
+      id="product-filters"
+      class="bg-gray-100 py-6 px-4 rounded-lg shadow-md mb-8"
     >
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <h3 class="text-lg font-semibold text-dark text-center mb-4">
+        🔍 Filter Products
+      </h3>
+      <div class="flex flex-wrap justify-center gap-4">
         <!-- Category Filter -->
-        <select id="filter-category" class="w-full p-2 rounded border">
-          <option value="">All Categories</option>
-          <option value="Deras">Deras</option>
-          <option value="New Arrivals">New Arrivals</option>
-        </select>
+        <div class="flex flex-col">
+          <label for="filter-category" class="text-sm font-medium text-gray-600"
+            >Category</label
+          >
+          <select
+            id="filter-category"
+            class="border border-gray-300 px-3 py-2 rounded-md shadow-sm"
+          >
+            <option value="">All Categories</option>
+            <option value="Deras">Deras</option>
+            <option value="New Arrivals">New Arrivals</option>
+          </select>
+        </div>
 
         <!-- Price Filter -->
-        <select id="filter-price" class="w-full p-2 rounded border">
-          <option value="">All Prices</option>
-          <option value="low">Low to High</option>
-          <option value="high">High to Low</option>
-        </select>
+        <div class="flex flex-col">
+          <label for="filter-price" class="text-sm font-medium text-gray-600"
+            >Sort by Price</label
+          >
+          <select
+            id="filter-price"
+            class="border border-gray-300 px-3 py-2 rounded-md shadow-sm"
+          >
+            <option value="">All Prices</option>
+            <option value="low-to-high">Price: Low to High</option>
+            <option value="high-to-low">Price: High to Low</option>
+          </select>
+        </div>
 
         <!-- Size Filter -->
-        <select id="filter-size" class="w-full p-2 rounded border">
-          <option value="">All Sizes</option>
-          <option value="S">Small</option>
-          <option value="M">Medium</option>
-          <option value="L">Large</option>
-        </select>
+        <div class="flex flex-col">
+          <label for="filter-size" class="text-sm font-medium text-gray-600"
+            >Size</label
+          >
+          <select
+            id="filter-size"
+            class="border border-gray-300 px-3 py-2 rounded-md shadow-sm"
+          >
+            <option value="">All Sizes</option>
+            <option value="S">Small</option>
+            <option value="M">Medium</option>
+            <option value="L">Large</option>
+          </select>
+        </div>
 
         <!-- Color Filter -->
-        <select id="filter-color" class="w-full p-2 rounded border">
-          <option value="">All Colors</option>
-          <option value="Red">Red</option>
-          <option value="Blue">Blue</option>
-          <option value="Green">Green</option>
-        </select>
+        <div class="flex flex-col">
+          <label for="filter-color" class="text-sm font-medium text-gray-600"
+            >Color</label
+          >
+          <select
+            id="filter-color"
+            class="border border-gray-300 px-3 py-2 rounded-md shadow-sm"
+          >
+            <option value="">All Colors</option>
+            <option value="Red">Red</option>
+            <option value="Blue">Blue</option>
+            <option value="Black">Black</option>
+          </select>
+        </div>
+
+        <!-- Reset Filters Button -->
+        <div class="flex items-end">
+          <button
+            id="reset-filters"
+            class="bg-red-500 text-white px-4 py-2 rounded-md shadow hover:bg-red-600 transition"
+          >
+            Reset Filters
+          </button>
+        </div>
       </div>
     </section>
 

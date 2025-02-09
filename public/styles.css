@@ -77,3 +77,30 @@ nav a:hover {
   opacity: 1;
   visibility: visible;
 }
+
+/* Filters Section */
+#product-filters {
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Style dropdowns */
+#product-filters select {
+  width: 180px;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Hover effect */
+#product-filters select:hover {
+  border-color: #ff9900;
+  box-shadow: 0 0 6px rgba(255, 153, 0, 0.3);
+}
+
+/* Reset Button */
+#reset-filters {
+  transition: background 0.2s ease-in-out;
+}
