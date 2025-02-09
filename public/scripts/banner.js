@@ -12,13 +12,17 @@ document.addEventListener("DOMContentLoaded", () => {
     const scrollTop = window.scrollY;
 
     if (scrollTop > lastScrollTop) {
-      // 🔽 Scrolling Down: Hide banner, move nav to top
+      // 🔽 Scrolling Down: Hide banner, move nav to top, shrink height
       promoBanner.style.transform = "translateY(-100%)";
-      navbar.style.top = "0px"; // Nav sticks at the top
+      navbar.style.top = "0px";
+      navbar.classList.add("py-2"); // Reduce padding
+      navbar.classList.remove("py-4"); // Remove extra height
     } else {
-      // 🔼 Scrolling Up: Show banner, push nav down to meet it
+      // 🔼 Scrolling Up: Show banner, push nav down, restore height
       promoBanner.style.transform = "translateY(0)";
-      navbar.style.top = `${bannerHeight}px`; // Ensures it aligns perfectly
+      navbar.style.top = `${bannerHeight}px`;
+      navbar.classList.add("py-4"); // Restore full padding
+      navbar.classList.remove("py-2"); // Remove shrink effect
     }
 
     lastScrollTop = scrollTop;
