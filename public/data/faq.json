@@ -1,0 +1,34 @@
+[
+  {
+    "question": "What is Ciru Deras?",
+    "answer": "Ciru Deras is an online store providing high-quality deras and more."
+  },
+  {
+    "question": "What payment methods do you accept?",
+    "answer": "We accept credit cards, PayPal, and mobile payments."
+  },
+  {
+    "question": "How long does shipping take?",
+    "answer": "Shipping typically takes 3-7 business days depending on location."
+  },
+  {
+    "question": "Do you offer refunds?",
+    "answer": "Yes, we offer a 14-day refund policy for unused products."
+  },
+  {
+    "question": "Do you ship internationally?",
+    "answer": "Yes, we offer worldwide shipping. Additional fees may apply."
+  },
+  {
+    "question": "How do I track my order?",
+    "answer": "You will receive a tracking link via email after your order is shipped."
+  },
+  {
+    "question": "Can I change my order after placing it?",
+    "answer": "You can modify your order within 24 hours of purchase by contacting support."
+  },
+  {
+    "question": "Do you have a physical store?",
+    "answer": "No, we are an online-only store to keep costs low and pass the savings to you."
+  }
+]
