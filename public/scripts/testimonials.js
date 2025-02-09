@@ -1,46 +1,110 @@
 import { baseUrl } from "./constants.js";
-const API_URL = `${baseUrl}/api/testimonials`; // Update if deploying online
+const API_URL = `${baseUrl}/api/testimonials`;
 
-// Fetch testimonials from MongoDB (only 4★ and above)
+let currentSlide = 0;
+let autoSlideInterval;
+
+// Fetch and render testimonials
 async function fetchTestimonials() {
   try {
     const response = await fetch(API_URL);
     if (!response.ok) throw new Error("Failed to fetch testimonials");
 
     const testimonials = await response.json();
-    renderTestimonials(testimonials);
+    setupCarousel(testimonials);
   } catch (error) {
     console.error("❌ Error fetching testimonials:", error);
   }
 }
 
-// Render testimonials dynamically
-function renderTestimonials(testimonials) {
-  const testimonialsGrid = document.querySelector("#testimonials-grid");
-  if (!testimonialsGrid) return;
+// Create and set up the carousel
+function setupCarousel(testimonials) {
+  const container = document.querySelector("#testimonial-carousel");
+  const indicators = document.querySelector("#testimonial-indicators");
 
-  testimonialsGrid.innerHTML = ""; // Clear previous content
+  if (!container || !indicators) return;
 
-  if (testimonials.length === 0) {
-    testimonialsGrid.innerHTML = `<p class="text-center text-gray-500">No reviews yet. Be the first to share your experience!</p>`;
-    return;
-  }
+  container.innerHTML = "";
+  indicators.innerHTML = "";
 
-  testimonials.forEach((testimonial) => {
-    const testimonialCard = document.createElement("div");
-    testimonialCard.className = "bg-white rounded-lg shadow-md p-6 text-center";
+  testimonials.forEach((testimonial, index) => {
+    const slide = document.createElement("div");
+    slide.className = `carousel-slide transition-opacity duration-700 ease-in-out absolute inset-0 ${
+      index === 0 ? "opacity-100" : "opacity-0"
+    }`;
 
-    testimonialCard.innerHTML = `
-      <img src="${
-        testimonial.photo || "/images/default-avatar.jpg"
-      }" class="w-20 h-20 mx-auto rounded-full mb-4 object-cover">
-      <h3 class="text-lg font-semibold text-dark">${testimonial.name}</h3>
-      <p class="text-primary font-bold">${"⭐".repeat(testimonial.rating)}</p>
-      <p class="text-gray-600 mt-2">${testimonial.review}</p>
+    slide.innerHTML = `
+      <div class="flex flex-col items-center text-center bg-white p-6 rounded-lg shadow-md mx-auto max-w-lg">
+        <img src="${testimonial.photo || "/images/default-avatar.jpg"}" 
+          class="w-16 h-16 rounded-full object-cover mb-3">
+        <h3 class="text-lg font-semibold text-dark">${testimonial.name}</h3>
+        <p class="text-primary font-bold">${"⭐".repeat(testimonial.rating)}</p>
+        <p class="text-gray-600 mt-2">${testimonial.review}</p>
+      </div>
     `;
+    container.appendChild(slide);
 
-    testimonialsGrid.appendChild(testimonialCard);
+    // Add indicator dots
+    const dot = document.createElement("span");
+    dot.className = `h-3 w-3 mx-1 bg-gray-400 rounded-full cursor-pointer ${
+      index === 0 ? "bg-primary" : ""
+    }`;
+    dot.addEventListener("click", () => updateSlide(index));
+    indicators.appendChild(dot);
   });
+
+  startAutoSlide(testimonials.length);
+
+  // Attach navigation buttons
+  document
+    .querySelector("#prev-testimonial")
+    .addEventListener("click", () => changeSlide(-1, testimonials.length));
+  document
+    .querySelector("#next-testimonial")
+    .addEventListener("click", () => changeSlide(1, testimonials.length));
+
+  // Pause auto-slide on hover
+  container.addEventListener("mouseenter", stopAutoSlide);
+  container.addEventListener("mouseleave", () =>
+    startAutoSlide(testimonials.length)
+  );
+}
+
+// Auto-slide every 5s
+function startAutoSlide(totalSlides) {
+  stopAutoSlide(); // Clear any existing interval before starting a new one
+  autoSlideInterval = setInterval(() => {
+    changeSlide(1, totalSlides);
+  }, 5000);
+}
+
+// Stop auto-slide when interacting
+function stopAutoSlide() {
+  clearInterval(autoSlideInterval);
+}
+
+// Navigate slides manually (loop back at the end)
+function changeSlide(direction, totalSlides) {
+  currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
+  updateSlide(currentSlide);
+}
+
+// Update slide based on index
+function updateSlide(index) {
+  const slides = document.querySelectorAll(".carousel-slide");
+  const dots = document.querySelectorAll("#testimonial-indicators span");
+
+  slides.forEach((slide, i) => {
+    slide.classList.toggle("opacity-100", i === index);
+    slide.classList.toggle("opacity-0", i !== index);
+  });
+
+  dots.forEach((dot, i) => {
+    dot.classList.toggle("bg-primary", i === index);
+    dot.classList.toggle("bg-gray-400", i !== index);
+  });
+
+  currentSlide = index;
 }
 
 // Submit testimonial to MongoDB
@@ -90,18 +154,17 @@ async function submitTestimonial(event) {
   }
 }
 
-// ✅ Function to open the testimonial modal
+// Open the testimonial modal
 function openTestimonialModal() {
   document.querySelector("#testimonial-modal")?.classList.remove("hidden");
 }
 
-// ✅ Function to close the testimonial modal
+// Close the testimonial modal
 function closeTestimonialModal() {
   document.querySelector("#testimonial-modal")?.classList.add("hidden");
 }
 
-
-// Event listeners
+// Initialize
 document.addEventListener("DOMContentLoaded", () => {
   fetchTestimonials();
   document

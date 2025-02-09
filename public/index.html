@@ -387,12 +387,30 @@
         Real Reviews, Real Confidence
       </h2>
 
-      <!-- Testimonials Grid -->
-      <div
-        id="testimonials-grid"
-        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
-      >
-        <!-- Testimonials will be inserted here dynamically -->
+      <!-- Testimonial Carousel Wrapper -->
+      <div class="relative w-full max-w-3xl mx-auto">
+        <!-- Testimonial Slides -->
+        <div
+          id="testimonial-carousel"
+          class="relative w-full h-[250px] overflow-hidden"
+        ></div>
+
+        <!-- Navigation Buttons -->
+        <button
+          id="prev-testimonial"
+          class="absolute top-1/2 left-4 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full shadow hover:bg-gray-600"
+        >
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <button
+          id="next-testimonial"
+          class="absolute top-1/2 right-4 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full shadow hover:bg-gray-600"
+        >
+          <i class="fas fa-chevron-right"></i>
+        </button>
+
+        <!-- Navigation Dots -->
+        <div id="testimonial-indicators" class="flex justify-center mt-4"></div>
       </div>
 
       <!-- Submit Testimonial Button -->
