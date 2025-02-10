@@ -6,7 +6,6 @@ const { Product } = require("./models/product"); // Import the Product model
 const dbURI = process.env.MONGODB_URI; // Replace with your DB URI
 
 // Sample Deras products
-// Updated Deras & Kaftans product list
 const products = [
   {
     image: "/images/products/dera1.jpg",
@@ -71,7 +70,7 @@ const products = [
     rating: { stars: 4.6, count: 60 },
     stock: 22,
     priceCents: 57900,
-    salePriceCents: null,
+    salePriceCents: 49900,
     keywords: ["dera", "modern", "fashion"],
   },
   // Newly Added Kaftans
@@ -92,7 +91,7 @@ const products = [
     rating: { stars: 4.8, count: 50 },
     stock: 25,
     priceCents: 35000,
-    salePriceCents: null,
+    salePriceCents: 32000,
     keywords: ["kaftan", "elegant", "maroon"],
   },
   {
@@ -108,7 +107,7 @@ const products = [
     rating: { stars: 4.7, count: 45 },
     stock: 20,
     priceCents: 38000,
-    salePriceCents: null,
+    salePriceCents: 35000,
     keywords: ["kaftan", "feather pattern", "red"],
   },
   {
@@ -127,7 +126,7 @@ const products = [
     rating: { stars: 4.6, count: 38 },
     stock: 30,
     priceCents: 32000,
-    salePriceCents: null,
+    salePriceCents: 29000,
     keywords: ["kaftan", "abstract", "cream yellow"],
   },
   {
@@ -147,7 +146,7 @@ const products = [
     rating: { stars: 4.8, count: 50 },
     stock: 25,
     priceCents: 35000,
-    salePriceCents: null,
+    salePriceCents: 30000,
     keywords: ["kaftan", "elegant", "maroon"],
   },
   {
@@ -163,7 +162,7 @@ const products = [
     rating: { stars: 4.7, count: 45 },
     stock: 20,
     priceCents: 38000,
-    salePriceCents: null,
+    salePriceCents: 33000,
     keywords: ["kaftan", "feather pattern", "red"],
   },
   {
@@ -182,7 +181,7 @@ const products = [
     rating: { stars: 4.6, count: 38 },
     stock: 30,
     priceCents: 32000,
-    salePriceCents: null,
+    salePriceCents: 27000,
     keywords: ["kaftan", "abstract", "cream yellow"],
   },
 ];
