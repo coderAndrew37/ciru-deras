@@ -88,8 +88,8 @@ nav a:hover {
   transform: translateY(-100%);
   opacity: 0;
   visibility: hidden;
-  transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out,
-    visibility 0.5s ease-in-out;
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out,
+    visibility 0s 0.3s; /* Delay visibility change */
 }
 
 /* When active, slide it down smoothly */
@@ -97,6 +97,8 @@ nav a:hover {
   transform: translateY(0);
   opacity: 1;
   visibility: visible;
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out,
+    visibility 0s 0s; /* No delay when opening */
 }
 
 /* Show search bar when checkbox is checked */
