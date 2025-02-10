@@ -9,10 +9,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const suggestionsDropdown = document.querySelector(
     ".js-suggestions-dropdown"
   );
-  const resultsContainer = document.querySelector(".js-products-grid");
+  const productsContainer = document.querySelector(".js-products-grid");
   const spinner = document.getElementById("loadingSpinner");
 
-  // Capture search filters
   const searchFilters = {
     category: document.querySelector("#search-category"),
     size: document.querySelector("#size-filter"),
@@ -20,34 +19,22 @@ document.addEventListener("DOMContentLoaded", () => {
     sort: document.querySelector("#sort-filter"),
   };
 
-  // 🚨 Check if any required elements are missing
-  if (!searchButton)
-    console.error("❌ handleSearch.js: searchButton NOT found.");
-  if (!searchInput) console.error("❌ handleSearch.js: searchInput NOT found.");
-  if (!suggestionsDropdown)
-    console.error("❌ handleSearch.js: suggestionsDropdown NOT found.");
-  if (!resultsContainer)
-    console.error("❌ handleSearch.js: resultsContainer NOT found.");
-  if (!spinner) console.error("❌ handleSearch.js: spinner NOT found.");
-
-  // Stop execution if any essential element is missing
   if (
     !searchButton ||
     !searchInput ||
     !suggestionsDropdown ||
-    !resultsContainer ||
+    !productsContainer ||
     !spinner
   ) {
-    console.error(
-      "❌ handleSearch.js: Missing one or more required elements. Stopping execution."
-    );
+    console.error("❌ handleSearch.js: Missing essential elements.");
     return;
   }
 
-  console.log("✅ All required search elements found!");
+  searchButton.addEventListener("click", async () => {
+    await handleSearch();
+    productsContainer.scrollIntoView({ behavior: "smooth" });
+  });
 
-  // Attach event listeners
-  searchButton.addEventListener("click", handleSearch);
   searchInput.addEventListener("input", debounce(handleSuggestions, 300));
   searchInput.addEventListener("keypress", (event) => {
     if (event.key === "Enter") handleSearch();
@@ -91,11 +78,10 @@ async function handleSuggestions(event) {
       suggestionsDropdown.innerHTML = suggestions
         .map(
           (s) =>
-            `<div class="suggestion-item px-4 py-2 cursor-pointer">${s.name}</div>`
+            `<div class='suggestion-item px-4 py-2 cursor-pointer'>${s.name}</div>`
         )
         .join("");
       suggestionsDropdown.classList.remove("hidden");
-
       document.querySelectorAll(".suggestion-item").forEach((item) => {
         item.addEventListener("click", () => {
           document.querySelector(".js-search-bar").value = item.textContent;
@@ -138,7 +124,7 @@ async function fetchSuggestions(query) {
 // Handle search function
 async function handleSearch() {
   const searchTerm = document.querySelector(".js-search-bar").value.trim();
-  const resultsContainer = document.querySelector(".js-products-grid");
+  const productsContainer = document.querySelector(".js-products-grid");
   const spinner = document.getElementById("loadingSpinner");
 
   const filters = {
@@ -154,19 +140,20 @@ async function handleSearch() {
   }
 
   spinner.classList.remove("hidden");
-  resultsContainer.innerHTML = "";
+  productsContainer.innerHTML = "";
 
   try {
     const results = await searchProducts(searchTerm, filters);
     if (results.length > 0) {
-      renderProducts(results, resultsContainer);
+      renderProducts(results, productsContainer);
     } else {
-      resultsContainer.innerHTML = "<p>No results found.</p>";
+      productsContainer.innerHTML =
+        "<p class='text-center text-gray-600'>No products found. Try a different search.</p>";
     }
   } catch (error) {
     console.error("❌ Search failed:", error);
-    resultsContainer.innerHTML =
-      "<p class='text-red-500'>⚠️ Error loading search results.</p>";
+    productsContainer.innerHTML =
+      "<p class='text-center text-red-500'>⚠️ Error loading search results.</p>";
   } finally {
     spinner.classList.add("hidden");
   }
