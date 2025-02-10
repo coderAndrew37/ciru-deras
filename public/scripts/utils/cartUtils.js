@@ -12,11 +12,14 @@ export async function isAuthenticated() {
     if (response.ok) {
       const data = await response.json();
       return data.authenticated;
+    } else {
+      const errorData = await response.json();
+      console.warn("Auth Check Failed:", errorData);
     }
   } catch (error) {
-    console.error("Authentication check failed:", error);
+    console.error("Auth check failed:", error);
   }
-  return false; // Default to false if there's an error
+  return false;
 }
 
 // Initialize Add to Cart listeners

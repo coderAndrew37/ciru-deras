@@ -6,61 +6,63 @@ const adminMiddleware = require("../middleware/isAdmin");
 const router = express.Router();
 const rateLimit = require("express-rate-limit");
 
-// Apply rate limit to login route
+// Rate Limit: Prevent brute-force login attempts
 const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 5, // Limit each IP to 5 requests per windowMs
+  max: 5, // Max 5 requests per IP
   message: "Too many login attempts. Please try again later.",
 });
 
-// Environment variables for JWT secrets
+// JWT Secret Keys
 const jwtSecret = process.env.JWT_SECRET;
 const jwtRefreshSecret = process.env.JWT_REFRESH_SECRET;
 
-// Helper function to generate tokens
-function generateAccessToken(userId) {
-  return jwt.sign({ userId }, jwtSecret, { expiresIn: "45m" });
+// 🔹 Generate Access Token (Expires in 45m)
+function generateAccessToken(user) {
+  return jwt.sign({ userId: user._id, isAdmin: user.isAdmin }, jwtSecret, {
+    expiresIn: "45m",
+  });
 }
 
-function generateRefreshToken(userId) {
-  return jwt.sign({ userId }, jwtRefreshSecret, { expiresIn: "7d" });
+// 🔹 Generate Refresh Token (Expires in 7 days)
+function generateRefreshToken(user) {
+  return jwt.sign({ userId: user._id }, jwtRefreshSecret, { expiresIn: "7d" });
 }
 
-// Registration Route
+// 🔹 Set Authentication Cookies
+function setAuthCookies(res, accessToken, refreshToken) {
+  res.cookie("access_token", accessToken, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "Strict",
+    maxAge: 45 * 60 * 1000, // 45 minutes
+  });
+
+  res.cookie("refresh_token", refreshToken, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "Strict",
+    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+  });
+}
+
+// ✅ **REGISTER USER**
 router.post("/register", async (req, res) => {
-  const { error } = User.validateRegister(req.body);
-  if (error) return res.status(400).json({ message: error.details[0].message });
-
   const { name, email, password } = req.body;
   try {
-    const userExists = await User.findOne({ email });
-    if (userExists)
+    if (await User.findOne({ email }))
       return res.status(400).json({ message: "Email already exists" });
 
     const user = new User({ name, email, password });
     await user.save();
 
-    // Generate tokens
-    const accessToken = generateAccessToken(user._id);
-    const refreshToken = generateRefreshToken(user._id);
-
-    res.cookie("refresh_token", refreshToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "Strict",
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
-
-    res.cookie("access_token", accessToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "Strict",
-      maxAge: 45 * 60 * 1000,
-    });
+    const accessToken = generateAccessToken(user);
+    const refreshToken = generateRefreshToken(user);
+    setAuthCookies(res, accessToken, refreshToken);
 
     res.status(201).json({
       message: "User registered successfully",
-      username: user.name,
+      name: user.name,
       email: user.email,
     });
   } catch (error) {
@@ -68,71 +70,62 @@ router.post("/register", async (req, res) => {
   }
 });
 
-// Login Route
-
+// ✅ **LOGIN USER**
 router.post("/login", loginLimiter, async (req, res) => {
-  const { error } = User.validateLogin(req.body);
-  if (error) return res.status(400).json({ message: error.details[0].message });
-
   const { email, password } = req.body;
   try {
     const user = await User.findOne({ email });
-    if (!user || !(await user.comparePassword(password))) {
+    if (!user || !(await user.comparePassword(password)))
       return res.status(400).json({ message: "Invalid credentials" });
-    }
 
-    // Generate tokens
-    const accessToken = generateAccessToken(user._id);
-    const refreshToken = generateRefreshToken(user._id);
+    const accessToken = generateAccessToken(user);
+    const refreshToken = generateRefreshToken(user);
+    setAuthCookies(res, accessToken, refreshToken);
 
-    // Set tokens as HTTP-only cookies
-    res.cookie("refresh_token", refreshToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "Strict",
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
-
-    res.cookie("access_token", accessToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "Strict",
-      maxAge: 45 * 60 * 1000,
-    });
-
-    // Redirect logic for frontend
     res.json({
       message: "Login successful",
-      isAdmin: user.isAdmin, // Include admin status in the response
-      username: user.name,
-      email: user.email,
+      name: user.name,
+      isAdmin: user.isAdmin,
     });
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
 });
 
-// Protected Profile Route
+// ✅ **GET USER PROFILE**
 router.get("/profile", authMiddleware, async (req, res) => {
   try {
-    const user = await User.findById(req.userId).select("name email");
+    const user = await User.findById(req.user.userId).select(
+      "name email isAdmin"
+    );
+    if (!user) return res.status(404).json({ message: "User not found" });
     res.json(user);
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
 });
 
-// Refresh Token Route
+// ✅ **CHECK IF USER IS AUTHENTICATED**
+router.get("/is-authenticated", authMiddleware, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.userId).select("name isAdmin"); // FIXED
+    res
+      .status(200)
+      .json({ authenticated: true, name: user.name, isAdmin: user.isAdmin });
+  } catch (error) {
+    res.status(401).json({ authenticated: false });
+  }
+});
+
+// ✅ **REFRESH TOKEN**
 router.post("/refresh", (req, res) => {
   const refreshToken = req.cookies.refresh_token;
-
-  if (!refreshToken) {
+  if (!refreshToken)
     return res.status(401).json({ message: "No refresh token provided" });
-  }
 
   try {
     const decoded = jwt.verify(refreshToken, jwtRefreshSecret);
-    const newAccessToken = generateAccessToken(decoded.userId);
+    const newAccessToken = generateAccessToken({ _id: decoded.userId });
 
     res.cookie("access_token", newAccessToken, {
       httpOnly: true,
@@ -147,57 +140,32 @@ router.post("/refresh", (req, res) => {
   }
 });
 
-// Check if user is authenticated
-router.get("/is-authenticated", authMiddleware, (req, res) => {
-  res.status(200).json({ authenticated: true });
+// ✅ **LOGOUT USER**
+router.post("/logout", (req, res) => {
+  res.clearCookie("access_token");
+  res.clearCookie("refresh_token");
+  res.status(200).json({ message: "Logged out successfully" });
 });
 
-// Create Admin Route (Protected)
+// ✅ **CREATE ADMIN USER (Protected)**
 router.post(
   "/create-admin",
   authMiddleware,
   adminMiddleware,
   async (req, res) => {
     const { name, email, password } = req.body;
-
-    // Validate input
-    const { error } = User.validateRegister({ name, email, password });
-    if (error)
-      return res.status(400).json({ message: error.details[0].message });
-
     try {
-      const userExists = await User.findOne({ email });
-      if (userExists) {
+      if (await User.findOne({ email }))
         return res.status(400).json({ message: "Email already exists" });
-      }
 
       const admin = new User({ name, email, password, isAdmin: true });
       await admin.save();
 
       res.status(201).json({ message: "Admin created successfully" });
     } catch (error) {
-      console.error("Error creating admin:", error);
-      res.status(500).json({ message: "Internal server error" });
+      res.status(500).json({ message: "Server error" });
     }
   }
 );
-
-// Logout Route
-router.post("/logout", (req, res) => {
-  // Clear both access and refresh tokens from cookies
-  res.clearCookie("access_token", {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "Strict",
-  });
-
-  res.clearCookie("refresh_token", {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "Strict",
-  });
-
-  res.status(200).json({ message: "Logged out successfully" });
-});
 
 module.exports = router;
