@@ -45,11 +45,7 @@ async function handleFilters() {
   localStorage.setItem("productFilters", JSON.stringify(filters));
 
   // Fetch filtered products
-  let products = await fetchProducts(category);
-
-  // Apply size & color filters manually (if needed)
-  if (size) products = products.filter((p) => p.sizes.includes(size));
-  if (color) products = products.filter((p) => p.color === color);
+  let products = await fetchProducts(category, price, size, color);
 
   // Apply sorting
   if (price === "low-to-high") {
@@ -315,3 +311,22 @@ function applySavedFilters() {
 
   handleFilters(); // Re-fetch products based on saved filters
 }
+
+// Ensure sorting applies to the entire product list
+async function applySorting() {
+  console.log("🔄 Applying sorting to all products...");
+  await handleFilters();
+}
+
+document
+  .getElementById("filter-price")
+  ?.addEventListener("change", applySorting);
+document
+  .getElementById("filter-category")
+  ?.addEventListener("change", applySorting);
+document
+  .getElementById("filter-size")
+  ?.addEventListener("change", applySorting);
+document
+  .getElementById("filter-color")
+  ?.addEventListener("change", applySorting);
