@@ -2,8 +2,6 @@ import { baseUrl } from "./constants.js";
 import { renderProducts } from "./products.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("✅ DOM fully loaded, initializing search functionality...");
-
   const searchButton = document.querySelector(".js-search-button");
   const searchInput = document.querySelector(".js-search-bar");
   const suggestionsDropdown = document.querySelector(

@@ -33,8 +33,6 @@ async function fetchProducts(
 
 // Handle filtering & sorting changes
 async function handleFilters() {
-  console.log("🔍 Applying filters...");
-
   const category = document.getElementById("filter-category")?.value || "";
   const price = document.getElementById("filter-price")?.value || "";
   const size = document.getElementById("filter-size")?.value || "";
